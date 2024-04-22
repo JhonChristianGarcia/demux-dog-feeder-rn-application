@@ -4,12 +4,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { createUserWithEmailAndPassword, signOut} from "firebase/auth";
 import {auth} from "../auth/config"
 import { collection, getFirestore, addDoc, doc, setDoc } from "firebase/firestore";
+import { useNavigation } from '@react-navigation/native';
 
 const db = getFirestore();
 const userRef = collection(db, 'users');
 // console.log(userRef)
 // console.log(auth)
 const SignUp = ({navigation}) => {
+  const navigator = useNavigation();
   const [inputEmail, setinputEmail] = useState("")
   const [inputPassword, setInputPassword] = useState("")
   const [userCredentials, setUserCredentials] = useState(null)
@@ -20,6 +22,9 @@ const SignUp = ({navigation}) => {
       setDoc(doc(db, 'users', userCred.user.uid), {deviceIDs: [1]})
       setinputEmail("")
       setInputPassword("")
+      setTimeout(()=>{
+        navigator.navigate("Home");
+      },2000)
       // console.log(userCred.user.uid)
 
     } catch(err){

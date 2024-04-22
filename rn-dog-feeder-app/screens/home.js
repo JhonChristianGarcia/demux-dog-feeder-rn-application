@@ -10,11 +10,11 @@ const db = getFirestore();
 
 
 const Home = ({navigation}) => {
+    const navigator = useNavigation()
     const [user, setUser] = useState(null);
     const [inputDevice, setInputDevice] = useState("");
     const [currentArray, setCurrentArray] = useState(null);
     // const [currentDeviceID, setCurrentDeviceID] = useState(null)    
-
 
     if(user){
         const currentDeviceRef = doc(db, "users", user);
@@ -43,8 +43,6 @@ const Home = ({navigation}) => {
     }
 
     useEffect(() => {
-       
-
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user.uid);
@@ -70,7 +68,6 @@ const Home = ({navigation}) => {
     // },[user])
 
 
-    const navigator = useNavigation()
     // console.log(userSignedIn)
     function handleLogout(){
         signOut(auth)
