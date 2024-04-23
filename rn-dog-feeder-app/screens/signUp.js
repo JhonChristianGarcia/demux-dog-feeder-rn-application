@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableHighlight } from "react-native";
+import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableHighlight, TouchableWithoutFeedback, TouchableOpacity} from "react-native";
 import React, {useEffect, useState} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createUserWithEmailAndPassword, signOut} from "firebase/auth";
@@ -24,11 +24,11 @@ const SignUp = ({navigation}) => {
       setInputPassword("")
       setTimeout(()=>{
         navigator.navigate("Home");
-      },2000)
+      },1500)
       // console.log(userCred.user.uid)
 
     } catch(err){
-      console.log(err.message)
+      alert("Enter a valid email address") 
     }
     // .then( userCreds => {
     //   setinputEmail("")
@@ -56,13 +56,25 @@ const SignUp = ({navigation}) => {
         style={styles.container}
         behavior="padding"
       >
-        <TextInput placeholder="Email" value={inputEmail} onChangeText={text=> setinputEmail(text)}/>
-        <TextInput placeholder="Password" value={inputPassword} secureTextEntry onChangeText={text=> setInputPassword(text)}/>
-        <View>
-          <TouchableHighlight onPress={handleSignUp}>
-            <Text>Sign Up</Text>
-          </TouchableHighlight>
+       <View>
+        <TouchableWithoutFeedback onPress={()=> navigator.navigate("Welcome")}>
+          <Text style={{textTransform: "uppercase", color: "#2A2A2A", fontSize: 70, fontWeight: "300"}}>&#8249;</Text>
+        </TouchableWithoutFeedback>
+
+          <Text style={{textTransform: "uppercase", color: "#2A2A2A", fontSize: 28, fontWeight: "900"}}>Sign Up</Text>
+       </View>
+
+
+        <View style={{ gap: 30}}>
+          <TextInput placeholder="Email address" value={inputEmail} onChangeText={text=> setinputEmail(text)} style={{fontSize: 18,height: 50, borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
+          <TextInput placeholder="Password" value={inputPassword} secureTextEntry onChangeText={text=> setInputPassword(text)} style={{fontSize: 18,height: 50, borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
         </View>
+
+       
+        <TouchableOpacity style={{backgroundColor: "#000", borderWidth: 2, padding: 10, borderColor: "#fff", alignItems: "center"}} onPress={handleSignUp}>
+          <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Sign Up</Text>
+        </TouchableOpacity> 
+      
       </KeyboardAvoidingView>
 
    </SafeAreaView>
@@ -72,9 +84,8 @@ const SignUp = ({navigation}) => {
 const styles= StyleSheet.create({
   container: {
     flex:1,
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 5
+    width: "90%",
+    gap: 120
   }
 })
 

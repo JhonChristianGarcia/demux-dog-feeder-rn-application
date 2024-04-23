@@ -46,7 +46,6 @@ const Home = ({navigation}) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user.uid);
-                
                 console.log(`Current user:${user.uid}`);
             } else {
                 setUser(null);

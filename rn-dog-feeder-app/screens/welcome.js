@@ -1,42 +1,31 @@
-import { View, Text, ImageBackground,StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, ImageBackground,StyleSheet, Image, TouchableOpacity, Button} from "react-native";
 import React from "react";
-import Video from 'react-native-video';
-import Button from "../components/Button";
+// import Button from "../components/Button";
+
+import { SafeAreaView } from "react-native-safe-area-context";
 const Welcome = ({navigation}) => {
   return (
-    <View style={{flex:1}}>
+    <SafeAreaView style={{flex:1}}>
       <ImageBackground
-        source={require('../assets/images/dogWallpaper.png')}
+      resizeMode= 'cover'
+        source={require('../assets/images/demuxdogpng.png')}
         style={styles.background}
+        
       >
-        {/* <Image 
-        source={require('../assets/images/corgiLogo.png')}
-        resizeMode='contain'
-        style={styles.logo}
-        /> */}
-        <Text>Welcome</Text>
-       <View style={{marginTop: 75}}>
-        <Button 
-          title="Login with Email"
-          onPress={()=> navigation.navigate("Login")}
-          style={styles.btn}
-          filled={true}
-        />
+       <View style={{width: "80%"} }>
+        <TouchableOpacity style={{backgroundColor: "none", borderWidth: 2, padding: 10, borderColor: "#fff", alignItems: "center"}} onPress={()=> navigation.navigate("Login")}>
+          <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Log in</Text>
+        </TouchableOpacity> 
        </View>
-       <View style={{marginTop: 25, flexDirection: "row"}}>
-        {/* <Button 
-          title="Login with Email"
-          onPress={()=> navigation.navigate("Login")}
-          style={styles.btn}
-          filled={true}
-        /> */}
-          <Text>Don't have an account?{"  "}</Text>
-        <TouchableOpacity onPress={()=> navigation.navigate("SignUp")}>
-          <Text>Sign Up</Text>
-        </TouchableOpacity>
+
+       <View style={{width: "80%",  marginBottom: 50} }>
+        <TouchableOpacity style={{backgroundColor: "#fff", borderWidth: 2, padding: 10, borderColor: "#fff", alignItems: "center"}} onPress={()=> navigation.navigate("SignUp")}>
+          <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Sign up</Text>
+        </TouchableOpacity> 
        </View>
+
       </ImageBackground>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -44,14 +33,17 @@ const styles = StyleSheet.create({
   background: {
     flex:1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "flex-end",
+    gap: 5
   },
   logo: {
     width:200,
     height: 200
   }, 
   btn: {
-    width: 300
+    width: 300,
+    color: "#fff",
+    backgroundColor: "none"
   }
 })
 

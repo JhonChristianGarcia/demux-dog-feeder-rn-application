@@ -26,10 +26,10 @@ const styles = StyleSheet.create({
     button: {
         paddingBottom: 16,
         paddingVertical: 10,
-        borderColor: COLORS.primary,
-        backgroundColor: COLORS.secondary,
+        // borderColor: COLORS.primary,
+        backgroundColor: "none",
         borderWidth: 2,
-        borderRadius: 12,
+        borderRadius: 2,
         alignItems: 'center',
         justifyContent: 'center'
     }
