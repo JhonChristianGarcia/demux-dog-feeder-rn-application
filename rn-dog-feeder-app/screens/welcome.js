@@ -1,9 +1,30 @@
 import { View, Text, ImageBackground,StyleSheet, Image, TouchableOpacity, Button} from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 // import Button from "../components/Button";
 
 import { SafeAreaView } from "react-native-safe-area-context";
+import { onAuthStateChanged } from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+import {auth} from "../auth/config"
+
 const Welcome = ({navigation}) => {
+  const navigator = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (!user) return;
+        navigator.navigate("Home");
+    });
+    return () => unsubscribe();
+}, []);
+
+//   if(hasUser){
+//     setTimeout(()=> {
+//       navigator.navigate("Home");
+//     },1000)
+//     return;
+//   }
+
   return (
     <SafeAreaView style={{flex:1}}>
       <ImageBackground

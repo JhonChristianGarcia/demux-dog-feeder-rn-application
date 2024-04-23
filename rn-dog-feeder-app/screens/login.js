@@ -15,7 +15,10 @@ const Login = ({navigation}) => {
   const [inputPassword, setInputPassword] = useState("")
 
   function handleSignIn(){
-    if(!inputEmail || !inputPassword) return;
+    if(!inputEmail || !inputPassword) {
+      alert("Please enter email and password")
+      return;
+    }
     // console.log("It went here")
     signInWithEmailAndPassword(auth,inputEmail, inputPassword).then((creds)=>{
       // console.log(creds)
