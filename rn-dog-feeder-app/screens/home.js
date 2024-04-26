@@ -25,9 +25,7 @@ const Home = ({navigation}) => {
          setCurrentArray(devices)
          }).catch(err=> console.log(err.message)) // set initial array based from the database
     }
-
     
-
     function handleAddDevice(){
         if(!inputDevice) return;
         if(!user) return;
@@ -92,7 +90,7 @@ const Home = ({navigation}) => {
             </View>
          
             <ScrollView>
-              {currentArray?.slice(1).map((device, index)=> <Text key={index}>{device}</Text>)}
+              {currentArray?.slice(1).map((device, index)=> <Device key={index} deviceId={device}/>)}
             </ScrollView>
             
             <Footer/>
@@ -102,9 +100,39 @@ const Home = ({navigation}) => {
   )
 }
 
+function Device({deviceId}){
+    const [motorState, setMotorState] = useState(null)
+    const deviceRef = doc(db, "device-feeder", deviceId);
+    async function setInitialState(){
+        const initialMotorState = await getDoc(deviceRef);
+        setMotorState(initialMotorState.data().motorOn)
+    }
+
+    setInitialState()
+
+
+
+    function updateMotorState(){
+        updateDoc(deviceRef, {
+            motorOn: !motorState
+        })
+        setTimeout(()=> {
+            updateDoc(deviceRef, {
+                motorOn: false 
+            })
+        }, 3000)
+    }
+    
+    return <View style={{backgroundColor: "orange"}}>
+        <Text>{deviceId}</Text>
+        <TouchableHighlight onPress={updateMotorState}>
+            <Text>Update state</Text>
+        </TouchableHighlight>
+    </View>
+}
 
 function Footer(){
-    return    <View style={{flexDirection: "row", justifyContent: "space-evenly"}}>
+    return <View style={{flexDirection: "row", justifyContent: "space-evenly"}}>
     <View style={{backgroundColor: "green", flex:1}}><FontAwesome6 name="toilet-portable" size={24} color="black" />
     <Text>Devices</Text>
     </View>
