@@ -18,20 +18,12 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [currentArray, setCurrentArray] = useState(null);
-  const onLayoutRootView = useCallback(async () => {
-    if (fonstLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fonstLoaded]);
-
-  if (!fonstLoaded) {
-    return null;
-  }
+ 
   
 
 
   return (
-    <SafeAreaProvider onLayout={onLayoutRootView}>
+    <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
