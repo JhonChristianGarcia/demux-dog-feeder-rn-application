@@ -1,9 +1,6 @@
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer, createNavigationContainerRef } from "@react-navigation/native";
-import { FONTS } from "./constants/fonts";
 import { useCallback, useState, useEffect} from "react";
 import { Login, SignUp, Welcome, Home, DeviceScreen, Account} from "./screens";
 import { StyleSheet } from "react-native";
@@ -20,7 +17,6 @@ import { Device } from "./screens/home";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [fonstLoaded] = useFonts(FONTS);
   const [currentArray, setCurrentArray] = useState(null);
   const onLayoutRootView = useCallback(async () => {
     if (fonstLoaded) {

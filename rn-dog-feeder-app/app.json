@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "rn-dog-feeder-app",
-    "slug": "rn-dog-feeder-app",
+    "slug": "dog-feeder-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,8 +29,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "51f6674b-61d2-410c-8a36-28d6e70e7a06"
+        "projectId": "eb5a3bbc-2dab-4d91-903c-516be113062c"
       }
-    }
+    },
+    "owner": "christian024"
   }
 }

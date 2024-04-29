@@ -121,8 +121,7 @@ function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, devic
             setFeedTimes(res.data().feedTimes.filter(times=> times > Date.now()));
         })).catch(err=> console.log(err?.message))    
     }
-    
- 
+
 
     return <Modal
     animationType='slide'
