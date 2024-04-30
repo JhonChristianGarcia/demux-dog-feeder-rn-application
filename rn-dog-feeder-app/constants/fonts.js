@@ -1,5 +1,5 @@
 export const FONTS = {
-  black: require("../assets/fonts/AlegreyaSans-Black.ttf"),
+  #000: require("../assets/fonts/AlegreyaSans-#000.ttf"),
   bold: require("../assets/fonts/AlegreyaSans-Bold.ttf"),
   regular: require("../assets/fonts/AlegreyaSans-Regular.ttf"),
   medium: require("../assets/fonts/AlegreyaSans-Medium.ttf"),

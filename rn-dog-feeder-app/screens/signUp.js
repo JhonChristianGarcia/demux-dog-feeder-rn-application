@@ -58,10 +58,10 @@ const SignUp = ({navigation}) => {
       >
        <View>
         <TouchableWithoutFeedback onPress={()=> navigator.navigate("Welcome")}>
-          <Text style={{textTransform: "uppercase", color: "#2A2A2A", fontSize: 70, fontWeight: "300"}}>&#8249;</Text>
+          <Text style={{textTransform: "uppercase", color: "#000", fontSize: 70, fontWeight: "300"}}>&#8249;</Text>
         </TouchableWithoutFeedback>
 
-          <Text style={{textTransform: "uppercase", color: "#2A2A2A", fontSize: 28, fontWeight: "900"}}>Sign Up</Text>
+          <Text style={{textTransform: "uppercase", color: "#000", fontSize: 28, fontWeight: "900"}}>Sign Up</Text>
        </View>
 
 

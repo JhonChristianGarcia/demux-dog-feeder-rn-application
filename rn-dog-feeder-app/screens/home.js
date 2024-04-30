@@ -1,10 +1,10 @@
-import { View, Text, TouchableHighlight, TextInput, Button, KeyboardAvoidingView, Image, ScrollView, Modal, TouchableOpacity, ImageBackground} from 'react-native'
+import { View, Text, TouchableHighlight, TextInput, Button, KeyboardAvoidingView, Image, ScrollView, Modal, TouchableOpacity, ImageBackground, BackHandler} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {auth, app} from "../auth/config"
 import {  signOut } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
-import { getFirestore, collection, getDocs, getDoc, doc, onSnapshot, updateDoc, addDoc, setDoc, FieldValue} from 'firebase/firestore';
+import { getFirestore, collection, getDocs, getDoc, doc, onSnapshot, updateDoc, addDoc, setDoc, FieldValue, onSnapshotsInSync} from 'firebase/firestore';
 import { onAuthStateChanged } from '@firebase/auth';    
 import { FontAwesome, FontAwesome6, AntDesign} from '@expo/vector-icons';
 export const db = getFirestore();
@@ -15,9 +15,27 @@ const Home = ({navigation, currentArray, setCurrentArray}) => {
     const [user, setUser] = useState(null);
     const [inputDevice, setInputDevice] = useState("");
     const [modalOpen, setModalOpen] = useState(false)
+    let devices = [];
+    const devicesRef = collection(db, "device-feeder");
+    onSnapshot(devicesRef, snapshot => {
+        snapshot.forEach(doc=> {
+            devices.push(doc.id)
+        })
+    })
+    // function handleBackPress(){
+    //     navigator.navigate("Home")
+    // }
+    // BackHandler.addEventListener("hardwareBackPress", handleBackPress)
+
+    
+    
+    // (async function () {
+    //     const initialMotorState = await getDoc(deviceRef);
+    //     setMotorState(initialMotorState.data().motorOn);
+    // })();
+    
     
     useEffect(()=>{
-
         if(!user) return;
         const currentDeviceRef = doc(db, "users", user);
         if(!currentDeviceRef) return
@@ -40,6 +58,10 @@ const Home = ({navigation, currentArray, setCurrentArray}) => {
         if(!currentArray) {
             setCurrentArray([1])
             return
+        }
+        if(!devices.includes(inputDevice)){
+            alert("Please enter a valid device ID");
+            return;
         }
         const ref = doc(db, "users", user);
         const toUpdate= {
@@ -75,7 +97,7 @@ const Home = ({navigation, currentArray, setCurrentArray}) => {
         <>
         <SafeAreaView style={{flex:1, backgroundColor: "#F5F5F5", alignItems:"center", justifyContent: "space-between"}}>
         <View style={{width: "100%",height: 280}}>
-            <ImageBackground style={{width: "100%",height: 280, justifyContent: "start", alignItems: "flex-end" }} source={require("../assets/images/dog1.jpeg")}>
+            <ImageBackground style={{width: "100%",height: 280, justifyContent: "start", alignItems: "flex-end" }} source={require("../assets/images/dog2.png")}>
                 <TouchableOpacity style={{padding: 20}} onPress={()=> setModalOpen(true)}>
                  <AntDesign name="pluscircle" size={30} color="#FFF" />
                 </TouchableOpacity>
@@ -88,7 +110,7 @@ const Home = ({navigation, currentArray, setCurrentArray}) => {
                         <AntDesign name="pluscircle" size={50} color="#D9BEA3" />
                     </TouchableOpacity>
                     <Text style={{textTransform: "uppercase", fontSize: 18, fontWeight: "700"}}>Add device</Text>
-                    <Text style={{color: "#2A2A2A", fontSize: 10}}>Add a device to get started.</Text>
+                    <Text style={{color: "#000", fontSize: 10}}>Add a device to get started.</Text>
                 </View>
 
             </KeyboardAvoidingView>}
@@ -97,8 +119,8 @@ const Home = ({navigation, currentArray, setCurrentArray}) => {
          
             <ScrollView style={{ width: "90%", backgroundColor: "#F5F5F5"}}>
         
-               <View >
-                <Text style={{color: "#000", fontSize: 18, textTransform: "uppercase", fontWeight: "bold"}}>All Devices</Text>
+               <View>
+                <Text style={{color: "#000", fontSize: 18, textTransform: "uppercase", fontWeight: "bold", padding: 10}}>All Devices</Text>
                </View>
            
               {currentArray?.slice(1).map((device, index)=> <Device key={index} deviceId={device}/>)}
@@ -139,6 +161,7 @@ export function Device({deviceId}){
     const navigator = useNavigation()
     const [motorState, setMotorState] = useState(null)
     const deviceRef = doc(db, "device-feeder", deviceId);
+    
     (async function () {
         const initialMotorState = await getDoc(deviceRef);
         setMotorState(initialMotorState.data().motorOn);
@@ -168,13 +191,15 @@ export function Device({deviceId}){
     </TouchableHighlight>
 }
 
-function Footer(){
+export function Footer(){
     const navigator = useNavigation()
 
     return <View style={{flexDirection: "row", justifyContent: "space-evenly", height: 70}}>
-    <View style={{flex:1, justifyContent: "center", alignItems: "center"}}><FontAwesome6 name="toilet-portable" size={24} color="black" />
-    <Text>Devices</Text>
-    </View>
+  <TouchableHighlight style={{flex:1, justifyContent: "center", alignItems: "center"}} onPress={()=> navigator.navigate("Home")}>
+    <View ><FontAwesome6 name="toilet-portable" size={24} color="#000" />
+        <Text>Devices</Text>
+        </View>
+  </TouchableHighlight>
 
     <TouchableHighlight style={{flex:1, justifyContent: "center", alignItems: "center"}} onPress={()=> navigator.navigate("Account")}>
     <View style={{ justifyContent: "center", alignItems: "center"}}>

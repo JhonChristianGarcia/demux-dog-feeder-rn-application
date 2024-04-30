@@ -1,5 +1,5 @@
 import { View, Text, KeyboardAvoidingView, StyleSheet, TextInput, TouchableHighlight, TouchableWithoutFeedback, TouchableOpacity} from "react-native";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/colors";
 import { useNavigation } from '@react-navigation/native';
@@ -13,6 +13,21 @@ const Login = ({navigation}) => {
   const navigator = useNavigation();
   const [inputEmail, setinputEmail] = useState("")
   const [inputPassword, setInputPassword] = useState("")
+  const [user, setUser] = useState(null)
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            setUser(user.uid);
+            navigator.navigate("Home")
+            console.log(`Current user:${user.uid}`);
+        } else {
+            setUser(null);
+            console.log("No user signed in");
+        }
+    });
+  }, [auth]); 
+
+
 
   function handleSignIn(){
     if(!inputEmail || !inputPassword) {
@@ -31,7 +46,7 @@ const Login = ({navigation}) => {
   }
 
   return (
-    <SafeAreaView style ={{flex: 1, backgroundColor: COLORS.white, justifyContent:"center", alignItems:"center"}}>
+    !user && <SafeAreaView style ={{flex: 1, backgroundColor: COLORS.white, justifyContent:"center", alignItems:"center"}}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior="padding"
@@ -39,10 +54,10 @@ const Login = ({navigation}) => {
       >
        <View>
         <TouchableWithoutFeedback onPress={()=> navigator.navigate("Welcome")}>
-          <Text style={{textTransform: "uppercase", color: "#2A2A2A", fontSize: 70, fontWeight: "300"}}>&#8249;</Text>
+          <Text style={{textTransform: "uppercase", color: "#000", fontSize: 70, fontWeight: "300"}}>&#8249;</Text>
         </TouchableWithoutFeedback>
 
-          <Text style={{textTransform: "uppercase", color: "#2A2A2A", fontSize: 28, fontWeight: "900"}}>Log in</Text>
+          <Text style={{textTransform: "uppercase", color: "#000", fontSize: 28, fontWeight: "900"}}>Log in</Text>
        </View>
 
 
