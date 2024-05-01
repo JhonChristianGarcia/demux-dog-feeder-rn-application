@@ -10,9 +10,9 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 // import firestore from '@react-native-firebase/firestore';
 
 // // Enable offline persistence
-firestore().settings({
-  persistence: true,
-});
+// firestore().settings({
+//   persistence: true,
+// });
 
 const DeviceScreen = ({route}) => {
     const [dateModalOpen, setDateModalOpen] = useState(false)
