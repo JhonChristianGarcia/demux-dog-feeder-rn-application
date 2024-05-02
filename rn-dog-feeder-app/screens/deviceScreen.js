@@ -66,7 +66,7 @@ const DeviceScreen = ({route}) => {
             </TouchableOpacity> 
             <CalendarModal dateModalOpen={dateModalOpen} setDateModalOpen={setDateModalOpen} updateMotorState={updateMotorState} deviceRef={deviceRef}/>
 
-            <Portion portionSelected={portionSelected} setPortionSelected={setPortionSelected}/>
+            <Portion portionSelected={portionSelected} setPortionSelected={setPortionSelected} deviceRef={deviceRef}/>
            
         </View>
      
@@ -79,11 +79,13 @@ const DeviceScreen = ({route}) => {
 
 
 
-function Portion({portionSelected,setPortionSelected }){
+function Portion({portionSelected,setPortionSelected, deviceRef }){
     const portions = [1,2,3,4,5]
 
     useEffect(()=>{
-        console.log(portionSelected)
+        updateDoc(deviceRef, {
+            portion: portionSelected
+        })
     }, [portionSelected]);
 
     return  <View style={{ width: "90%", justifyContent: "space-between", alignItems:"center", gap: 10}}>
@@ -123,15 +125,17 @@ function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, devic
     
     },[])
 
-    useEffect(()=>{
-        feedTimes?.forEach(time=> {
-            const delay = time - Date.now();
-            if(delay<0) return;
-            setTimeout(()=>{
-                updateMotorState()
-            }, delay)
-        })
-    }, [feedTimes])
+    let feedTime = [];
+    onSnapshot(deviceRef, docSnapshot=> {
+        if(docSnapshot.exists()){
+            // feedTime.push(docSnapshot.data().feedTimes)
+            docSnapshot.data().feedTimes.forEach(time=> {
+                feedTime.push(time)
+            })
+            
+        }
+    })
+    
 
     function handleDateChange(event, selectedDate){
         setDate(selectedDate)
@@ -150,13 +154,14 @@ function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, devic
         if(delay < 0) {
             alert("You can not set feeding time on the past :)")
             return;}
-        updateDoc(deviceRef, {
-            feedTimes: [...feedTimes.filter(times=> times > Date.now()), time]
-        }).then(getDoc(deviceRef).then(res=> {
-            if(res.data().feedTimes.length < 1) return;
-            setFeedTimes(res.data().feedTimes.filter(times=> times > Date.now()));
-            alert("Added feeding schedule successfully")
-        })).catch(err=> console.log(err?.message))    
+   
+      updateDoc(deviceRef, {
+        feedTimes: [...feedTime, time]
+    }).then(getDoc(deviceRef).then(res=> {
+        if(res.data().feedTimes.length < 1) return;
+        setFeedTimes(res.data().feedTimes.filter(times=> times > Date.now()));
+        alert("Added feeding schedule successfully")
+    })).catch(err=> console.log(err?.message))  
     }
 
 
