@@ -196,7 +196,8 @@ export function Footer(){
 
     return <View style={{flexDirection: "row", justifyContent: "space-evenly", height: 70}}>
   <TouchableHighlight style={{flex:1, justifyContent: "center", alignItems: "center"}} onPress={()=> navigator.navigate("Home")}>
-    <View ><FontAwesome6 name="toilet-portable" size={24} color="#000" />
+    <View style={{alignItems:"center"}}>
+        <FontAwesome6 name="toilet-portable" size={24} color="#000" />
         <Text>Devices</Text>
         </View>
   </TouchableHighlight>

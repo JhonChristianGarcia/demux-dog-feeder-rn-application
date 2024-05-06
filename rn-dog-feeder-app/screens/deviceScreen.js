@@ -60,6 +60,8 @@ const DeviceScreen = ({route}) => {
     function updateMotorState(){
         updateDoc(deviceRef, {
             motorOn: !motorState
+        }).then(()=> {
+            alert("Your dog has been fed!")
         })
         setTimeout(()=> {
             updateDoc(deviceRef, {
@@ -88,7 +90,7 @@ const DeviceScreen = ({route}) => {
 
         <View style={{justifyContent:"center", alignItems: "center",  height: 300, width: "100%", gap: 10}}>
             <TouchableOpacity style={{ width: "90%", backgroundColor: "#000", borderWidth: 2, padding: 10, alignItems: "center"}} onPress={updateMotorState}>
-            <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Feed now</Text>
+                 <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Feed now</Text>
             </TouchableOpacity> 
 
         
@@ -129,7 +131,7 @@ function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
                     }
                  <TouchableWithoutFeedback onPress={handleFeedTimeModal}>
                     <View style={{flexDirection: "row", backgroundColor: "black", paddingLeft: 20, paddingRight: 20, padding: 5}}>
-                    <Text style={{color: "#fff"}}>Close</Text>
+                    <Text style={{color: "#fff", textTransform: "uppercase"}}>Close</Text>
                     {/* <AntDesign name="closesquare" size={24} color="red" />     */}
                     </View>
                 </TouchableWithoutFeedback>
