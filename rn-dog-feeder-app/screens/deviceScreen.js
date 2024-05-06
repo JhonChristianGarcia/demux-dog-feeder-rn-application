@@ -8,6 +8,10 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker'
 // import firestore from '@react-native-firebase/firestore';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { FontAwesome, FontAwesome6, AntDesign} from '@expo/vector-icons';
+
+import { ScrollView } from 'react-native-gesture-handler';
 
 // // Enable offline persistence
 // firestore().settings({
@@ -15,20 +19,44 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 // });
 
 const DeviceScreen = ({route}) => {
+
     const [dateModalOpen, setDateModalOpen] = useState(false)
     const [motorState, setMotorState] = useState(null);
     const [portionSelected, setPortionSelected] = useState(1);
-
-    
-    
+    const [feedTimeModalOn, setFeedTimeModalOn] = useState(false)
     const navigator = useNavigation();
     const {device} = route.params;
-    const deviceRef = doc(db, "device-feeder", device);
+    const deviceRef = doc(db, "device-feeder", device); 
+
+    const [feedTimes, setFeedTimes] = useState([]);
+    useEffect(()=>{
+        onSnapshot(deviceRef, docSnapshot=> {
+            if(docSnapshot.exists()){
+                // feedTime.push(docSnapshot.data().feedTimes)
+                docSnapshot.data().feedTimes.forEach(time=> {
+                    setFeedTimes(times=> {
+                        return [time, ...times.filter(t=> t != time)]
+                    })
+                })
+                
+            }
+        })
+
+    }, [])
+
+
+    function handleFeedTimeModal(){
+        setFeedTimeModalOn(state=> !state)
+    }
+    
     (async function () {
         const initialMotorState = await getDoc(deviceRef);
         setMotorState(initialMotorState.data().motorOn);
+        // console.log(initialMotorState.data())
     })();
 
+   
+ 
     function updateMotorState(){
         updateDoc(deviceRef, {
             motorOn: !motorState
@@ -48,6 +76,9 @@ const DeviceScreen = ({route}) => {
             <View style={{flex:1, justifyContent: "center",  alignItems:"center", height: 100}}>
                 <Text style={{fontSize: 18, fontWeight: "700", textTransform: "uppercase"}}>Demux Dog Feeder</Text>
             </View>
+            <TouchableHighlight onPress={handleFeedTimeModal} style={{marginRight: 10}}>
+                <FontAwesome5 name="user-clock" size={22} color="black" />
+            </TouchableHighlight>
         </View>
 
         <View style={{justifyContent: "center", alignItems:"center"}}>
@@ -67,17 +98,45 @@ const DeviceScreen = ({route}) => {
             <CalendarModal dateModalOpen={dateModalOpen} setDateModalOpen={setDateModalOpen} updateMotorState={updateMotorState} deviceRef={deviceRef}/>
 
             <Portion portionSelected={portionSelected} setPortionSelected={setPortionSelected} deviceRef={deviceRef}/>
-           
+            <FeedTimesModal feedTimeModalOn={feedTimeModalOn} handleFeedTimeModal={handleFeedTimeModal} feedTimes={feedTimes}/>
         </View>
-     
-
-      
         
     </SafeAreaView>
    
 }
 
 
+function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
+  
+    return <Modal
+    animationType='slide'
+    transparent={true}
+    visible={feedTimeModalOn}
+    >
+        <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
+            
+            <View style={{backgroundColor: "#fff", height: 480, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+           
+                <Text style={{textTransform: "uppercase", fontWeight: "bold", fontSize: 18}}>{feedTimes.length > 0 ? "Your dog's feeding schedules:" : "No Feeding Schedules Yet"}</Text>
+                    {feedTimes?.sort((a,b)=> a-b).map((time, i)=> {
+                        const timeStr = new Date(time).toLocaleTimeString()
+                        const dateStr = new Date(time).toDateString()
+                        const combinedStr = `${dateStr} ${timeStr}`
+                    return <View key={i} style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <AntDesign name="arrowright" size={18} color="black" />
+                        <Text style={{ marginLeft: 8, fontWeight: "bold", fontSize: 16}}>{combinedStr}</Text>
+                    </View>}) 
+                    }
+                 <TouchableWithoutFeedback onPress={handleFeedTimeModal}>
+                    <View style={{flexDirection: "row", backgroundColor: "black", paddingLeft: 20, paddingRight: 20, padding: 5}}>
+                    <Text style={{color: "#fff"}}>Close</Text>
+                    {/* <AntDesign name="closesquare" size={24} color="red" />     */}
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+     </View>
+    </Modal>
+}
 
 function Portion({portionSelected,setPortionSelected, deviceRef }){
     const portions = [1,2,3,4,5]
@@ -219,4 +278,3 @@ function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, devic
 
 export default DeviceScreen
 
-const styles = StyleSheet.create({})
