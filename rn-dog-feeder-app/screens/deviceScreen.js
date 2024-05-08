@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableHighlight, TouchableWithoutFeedback, Image, TouchableOpacity, Modal } from 'react-native'
+import { StyleSheet, Text, View, TouchableHighlight, TouchableWithoutFeedback, Image, TouchableOpacity, Modal, Switch, FlatList, ScrollView } from 'react-native'
 import { getFirestore, collection, getDocs, getDoc, doc, onSnapshot, updateDoc, addDoc, setDoc, FieldValue} from 'firebase/firestore';
 
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { FontAwesome, FontAwesome6, AntDesign} from '@expo/vector-icons';
 
-import { ScrollView } from 'react-native-gesture-handler';
+
 
 // // Enable offline persistence
 // firestore().settings({
@@ -71,7 +71,7 @@ const DeviceScreen = ({route}) => {
     }
     
     return <SafeAreaView >
-        <View style={{flexDirection: "row", alignItems: "center", justifyContent:"space-around", height: "15%"}}>
+        <View style={{flexDirection: "row", alignItems: "center", justifyContent:"space-around", height: "15%", }}>
             <TouchableWithoutFeedback onPress={()=> navigator.navigate("Home")}>
              <Text style={{textTransform: "uppercase", color: "#000", fontSize: 70, fontWeight: "300", padding:10, paddingBottom: 20}}>&#8249;</Text>
             </TouchableWithoutFeedback>
@@ -100,6 +100,9 @@ const DeviceScreen = ({route}) => {
             <CalendarModal dateModalOpen={dateModalOpen} setDateModalOpen={setDateModalOpen} updateMotorState={updateMotorState} deviceRef={deviceRef}/>
 
             <Portion portionSelected={portionSelected} setPortionSelected={setPortionSelected} deviceRef={deviceRef}/>
+            
+            <RecurringSchedule/>
+            
             <FeedTimesModal feedTimeModalOn={feedTimeModalOn} handleFeedTimeModal={handleFeedTimeModal} feedTimes={feedTimes}/>
         </View>
         
@@ -107,7 +110,79 @@ const DeviceScreen = ({route}) => {
    
 }
 
+function Schedule({item}){
+    const [isOn, setIsOn] = useState(false)
+    const handleSwitch = function(){
+        setIsOn(state=> !state)
+    }
+    return <View style={{ height: 80, padding: 15, backgroundColor: "#fff", width: "95%", alignSelf: "center", flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderRadius: 10,  marginBottom: 10}}>
+        <Text style={{fontSize: 20, fontWeight: "600", color: "#262C28"}}>{item.time}</Text>
+        <Switch 
+        trackColor={{false: '#262C28', true: '#00B14F'}}
+        thumbColor={isOn ? '#f4f3f4' : '#f4f3f4'}
+        onValueChange={handleSwitch}
+        value={isOn}/>
+    </View>
+}
 
+function RecurringSchedule(){
+    const schedules = [{time: "08:55AM", repeat: [5,6]}, {time: "08:57AM", repeat: [5,6]}]
+    const [isParentVisible, setIsParentVisible] = useState(true)
+    const [addScheduleVisible, setAddScheduleVisible] = useState(false)
+    
+    function handleScheduleVisible(){
+        setAddScheduleVisible(state=> !state);
+    }
+    return <Modal
+    animationType='slide'
+    transparent={true}
+    visible={isParentVisible}
+    >
+         <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
+            <View style={{ backgroundColor: "#F5F5F5", height: 600, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+                <TouchableHighlight style={{alignSelf: "flex-end", padding: 10}} onPress={()=> setIsParentVisible(false)}>
+                     <AntDesign name="close" size={24} color="black" />
+                </TouchableHighlight>
+                {/* <View style={{height: "70%", width: "90%", backgroundColor: "yellow"}}>
+                    
+                </View> */}
+                {/* {
+                    schedules.map((item)=> {
+                        return <Text>{item.time}</Text>
+                    })
+                } */}
+
+                <FlatList
+                    data={schedules}
+                    renderItem={({item})=> <Schedule item={item}/>}
+                    keyExtractor={item=> item.time}
+                    style={{width: "100%", height: "80%"}}
+                />
+                <AddTimeSched isVisible={addScheduleVisible} handleVisibility ={handleScheduleVisible}/>
+                <TouchableOpacity style={{padding: 20}} onPress={handleScheduleVisible}>
+                     <AntDesign name="pluscircleo" size={40} color="black" />
+                </TouchableOpacity>
+            </View>
+        </View>
+    </Modal>
+}
+
+function AddTimeSched({isVisible, handleVisibility}){
+    return <Modal
+        animationType='slide'
+        transparent={true}
+        visible={isVisible}
+        >
+         <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
+            <View style={{ backgroundColor: "#F5F5F5", height: 400, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+                <Text>HERE YOU CAN ADD TIME SCHED</Text>
+                <TouchableOpacity onPress={handleVisibility}>
+                    <Text>Close</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    </Modal>
+}
 function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
   
     return <Modal
