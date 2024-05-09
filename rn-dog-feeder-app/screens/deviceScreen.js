@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableHighlight, TouchableWithoutFeedback, Image, TouchableOpacity, Modal, Switch, FlatList, ScrollView , TextInput} from 'react-native'
+import { StyleSheet, Text, View, TouchableHighlight, TouchableWithoutFeedback, Image, TouchableOpacity, Modal, Switch, FlatList, ScrollView , TextInput, ImageBackground} from 'react-native'
 import { getFirestore, collection, getDocs, getDoc, doc, onSnapshot, updateDoc, addDoc, setDoc, FieldValue} from 'firebase/firestore';
 
 import { useEffect, useState, useRef } from 'react';
@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker'
 // import firestore from '@react-native-firebase/firestore';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { FontAwesome, FontAwesome6, AntDesign, Feather, MaterialIcons} from '@expo/vector-icons';
+import { FontAwesome, FontAwesome6, AntDesign, Feather, MaterialIcons, Ionicons} from '@expo/vector-icons';
 
 
 
@@ -24,7 +24,8 @@ const DeviceScreen = ({route}) => {
     const [motorState, setMotorState] = useState(null);
     const [portionSelected, setPortionSelected] = useState(1);
     const [feedTimeModalOn, setFeedTimeModalOn] = useState(false)
-    const [reccuringScheduleVisible, setReccurringScheduleVisible] = useState(false)
+    const [reccuringScheduleVisible, setReccurringScheduleVisible] = useState(false);
+    const [infoModalOpen, setInfoModalOpen] = useState(false);
     const navigator = useNavigation();
     const {device} = route.params;
     const deviceRef = doc(db, "device-feeder", device); 
@@ -45,7 +46,9 @@ const DeviceScreen = ({route}) => {
 
     }, [])
 
-
+    function handleInfoModal(){
+        setInfoModalOpen(state=> !state)
+    }
     function handleFeedTimeModal(){
         setFeedTimeModalOn(state=> !state)
     }
@@ -111,8 +114,8 @@ const DeviceScreen = ({route}) => {
           
             <CalendarModal dateModalOpen={dateModalOpen} setDateModalOpen={setDateModalOpen} updateMotorState={updateMotorState} deviceRef={deviceRef}/>
 
-            <Portion portionSelected={portionSelected} setPortionSelected={setPortionSelected} deviceRef={deviceRef}/>
-            
+            <Portion portionSelected={portionSelected} setPortionSelected={setPortionSelected} deviceRef={deviceRef} handleInfoModal={handleInfoModal} />
+            <InformationModal infoModalOpen={infoModalOpen} handleInfoModal={handleInfoModal}/>
             <RecurringSchedule deviceRef={deviceRef} reccuringScheduleVisible={reccuringScheduleVisible} handleReccurringModalOn={handleReccurringModalOn}/>
             
             <FeedTimesModal feedTimeModalOn={feedTimeModalOn} handleFeedTimeModal={handleFeedTimeModal} feedTimes={feedTimes}/>
@@ -121,6 +124,28 @@ const DeviceScreen = ({route}) => {
     </SafeAreaView>
    
 }
+
+
+function InformationModal({infoModalOpen, handleInfoModal}){
+
+    return (
+        <Modal
+          animationType='slide'
+          transparent={true}
+          visible={infoModalOpen}
+        >
+          <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
+            <View style={{backgroundColor: "#fff", height: 350, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+            <TouchableOpacity onPress={handleInfoModal} style={{alignSelf: "flex-end", marginRight: 10, marginBottom: -20}}>
+              <AntDesign name="closecircle" size={24} color="black" />
+            </TouchableOpacity>
+              <Image style={{width: "95%", height: "100%"}} source={require("./../assets/images/portion.png")}></Image>
+            </View>
+          </View>
+        </Modal>
+      )
+}
+
 
 function Schedule({item, deviceRef}){
     let existingSchedules = [];
@@ -210,7 +235,6 @@ function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurrin
     const [addScheduleVisible, setAddScheduleVisible] = useState(false)
     
 
-
     let existingSchedules = [];
     onSnapshot(deviceRef, docSnapshot=> {
         if(docSnapshot.exists()){
@@ -239,10 +263,9 @@ function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurrin
                    </TouchableOpacity>
                 </View>
             
-
                 <FlatList
                     data={existingSchedules}
-                    renderItem={({item})=> <Schedule item={item} deviceRef={deviceRef} existingSchedules={existingSchedules}/>}
+                    renderItem={({item, index})=> <Schedule key={index} item={item} deviceRef={deviceRef} existingSchedules={existingSchedules}/>}
                     keyExtractor={(item,index)=> index}
                     style={{width: "100%", height: "80%"}}
                 />
@@ -262,7 +285,7 @@ function AddTimeSched({isVisible, handleVisibility, deviceRef}){
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [datesSelected, setDatesSelected] = useState([]);
     const [portionSelected, setPortionSelected] = useState(1)
-    const portions = [1,2,3,4,5,6,7,8,9,10]
+    const portions = [1,2,3,4,5,6,7]
  
  
     function handlePortionSelection(numSelected){
@@ -341,7 +364,7 @@ function AddTimeSched({isVisible, handleVisibility, deviceRef}){
                     <Text style={{fontSize: 16, fontWeight: "500"}}>{stringedTime || new Date().toLocaleTimeString()}</Text>
                </View>
                 {
-                    showTimePicker && <DateTimePicker 
+                    showTimePicker && <DateTimePicker
                     mode={"time"}
                     value={pickedTime}
                     onChange={handleTimeChange}
@@ -405,8 +428,8 @@ function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
     </Modal>
 }
 
-function Portion({portionSelected,setPortionSelected, deviceRef }){
-    const portions = [1,2,3,4,5,6,7,8,9,10]
+function Portion({portionSelected,setPortionSelected, deviceRef,handleInfoModal }){
+    const portions = [1,2,3,4,5,6,7]
 
     useEffect(()=>{
         updateDoc(deviceRef, {
@@ -415,7 +438,12 @@ function Portion({portionSelected,setPortionSelected, deviceRef }){
     }, [portionSelected]);
 
     return  <View style={{ width: "90%", justifyContent: "space-between", alignItems:"center", gap: 10}}>
+    <View style={{flexDirection: "row", justifyContent:"center", alignItems: "center", gap: 10}}>
     <Text style={{textTransform: "uppercase"}}>Proportion</Text>
+   <TouchableOpacity onPress={handleInfoModal}>
+     <Ionicons name="information-circle" size={22} color="black" />
+   </TouchableOpacity>
+    </View>
      <ScrollView horizontal style={{width: "90%"}}>
         <View style={{flexDirection: "row", width: "90%",  gap: 50,  justifyContent: "space-between",}}>
         {portions.map(p => {
