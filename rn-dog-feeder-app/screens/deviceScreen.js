@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, TouchableHighlight, TouchableWithoutFeedback, Image, TouchableOpacity, Modal, Switch, FlatList, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableHighlight, TouchableWithoutFeedback, Image, TouchableOpacity, Modal, Switch, FlatList, ScrollView , TextInput} from 'react-native'
 import { getFirestore, collection, getDocs, getDoc, doc, onSnapshot, updateDoc, addDoc, setDoc, FieldValue} from 'firebase/firestore';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import React from 'react'
 import { db } from './home';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker'
 // import firestore from '@react-native-firebase/firestore';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { FontAwesome, FontAwesome6, AntDesign} from '@expo/vector-icons';
+import { FontAwesome, FontAwesome6, AntDesign, Feather, MaterialIcons} from '@expo/vector-icons';
 
 
 
@@ -24,6 +24,7 @@ const DeviceScreen = ({route}) => {
     const [motorState, setMotorState] = useState(null);
     const [portionSelected, setPortionSelected] = useState(1);
     const [feedTimeModalOn, setFeedTimeModalOn] = useState(false)
+    const [reccuringScheduleVisible, setReccurringScheduleVisible] = useState(false)
     const navigator = useNavigation();
     const {device} = route.params;
     const deviceRef = doc(db, "device-feeder", device); 
@@ -47,6 +48,10 @@ const DeviceScreen = ({route}) => {
 
     function handleFeedTimeModal(){
         setFeedTimeModalOn(state=> !state)
+    }
+
+    function handleReccurringModalOn(){
+        setReccurringScheduleVisible(state=> !state)
     }
     
     (async function () {
@@ -94,14 +99,21 @@ const DeviceScreen = ({route}) => {
             </TouchableOpacity> 
 
         
-            <TouchableOpacity style={{width: "90%", backgroundColor: "#FFF", borderWidth: 2, padding: 10, alignItems: "center"}} onPress={()=> setDateModalOpen(true)}>
-            <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Set Feeding Time</Text>
+
+            <TouchableOpacity style={{width: "90%", backgroundColor: "#FFF", borderWidth: 2, padding: 10, alignItems: "center"}} onPress={handleReccurringModalOn}>
+                 <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Set Scheduled Feeding</Text>
             </TouchableOpacity> 
+
+            <TouchableOpacity style={{width: "90%", backgroundColor: "#FFF", borderWidth: 2, padding: 10, alignItems: "center"}} onPress={()=> setDateModalOpen(true)}>
+            <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Set Custom Date</Text>
+            </TouchableOpacity> 
+
+          
             <CalendarModal dateModalOpen={dateModalOpen} setDateModalOpen={setDateModalOpen} updateMotorState={updateMotorState} deviceRef={deviceRef}/>
 
             <Portion portionSelected={portionSelected} setPortionSelected={setPortionSelected} deviceRef={deviceRef}/>
             
-            <RecurringSchedule/>
+            <RecurringSchedule deviceRef={deviceRef} reccuringScheduleVisible={reccuringScheduleVisible} handleReccurringModalOn={handleReccurringModalOn}/>
             
             <FeedTimesModal feedTimeModalOn={feedTimeModalOn} handleFeedTimeModal={handleFeedTimeModal} feedTimes={feedTimes}/>
         </View>
@@ -110,55 +122,131 @@ const DeviceScreen = ({route}) => {
    
 }
 
-function Schedule({item}){
-    const [isOn, setIsOn] = useState(false)
-    const handleSwitch = function(){
-        setIsOn(state=> !state)
+function Schedule({item, deviceRef}){
+    let existingSchedules = [];
+    
+    onSnapshot(deviceRef, docSnapshot=> {
+        if(docSnapshot.exists()){
+            // feedTime.push(docSnapshot.data().feedTimes)
+            docSnapshot.data().reccuringSched.forEach(sched=> {
+                existingSchedules.push(sched)
+            })
+            
+        }
+    })
+    const [isActive, setIsActive] = useState(null)
+    useEffect(()=> {
+        getDoc(deviceRef).then(res=> {
+            const [schedule] = res.data().reccuringSched.filter(sched=> sched.id === item.id);
+            setIsActive(schedule.isOn)
+        })
+    }, [])
+    
+
+    function handleDeleteSchedule(){
+        updateDoc(deviceRef, {
+            reccuringSched: existingSchedules.filter(sched=> sched.id !== item.id)
+        }).then(()=> console.log("Document deleted"))
     }
+
+    if(!existingSchedules) return;
+    const handleSwitch = function(){
+        
+        const setStateAsync = () => {
+            return new Promise(resolve => {
+                setIsActive(state=> {
+                    resolve(!state)
+                    return !state})
+            })
+           
+        }
+        setStateAsync().then(res=> {
+
+    const updatedSched = existingSchedules.map(scheds=> {
+            if(scheds.id === item.id){
+                return {...scheds, isOn: res}
+            }
+            return scheds;
+        })
+        updateDoc(deviceRef, {
+                reccuringSched: updatedSched
+            })
+
+        })
+        
+        
+    }
+
+
+
     return <View style={{ height: 80, padding: 15, backgroundColor: "#fff", width: "95%", alignSelf: "center", flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderRadius: 10,  marginBottom: 10}}>
-        <Text style={{fontSize: 20, fontWeight: "600", color: "#262C28"}}>{item.time}</Text>
-        <Switch 
-        trackColor={{false: '#262C28', true: '#00B14F'}}
-        thumbColor={isOn ? '#f4f3f4' : '#f4f3f4'}
-        onValueChange={handleSwitch}
-        value={isOn}/>
+        <View>
+             <Text style={{fontSize: 20, fontWeight: "600", color: "#262C28"}}>{item.time}</Text>
+           <View style={{flexDirection: "row"}}>
+           {
+                item.repeat.length === 7 ? <Text style={{fontSize: 12}}>Everyday</Text> : item.repeat.map(day=> <Text style={{fontSize: 12, marginRight: 3}}>{day}</Text>)
+            }
+           </View>
+        </View>
+        <Text>Portion: {item.portion}</Text>
+       <View style={{flexDirection: "row", justifyContent: "center", alignItems:"center"}}>
+        <TouchableHighlight onPress={handleDeleteSchedule}>
+         <MaterialIcons name="delete" size={24} color="#FF204E" />
+        </TouchableHighlight>
+            <Switch 
+            trackColor={{false: '#262C28', true: '#00B14F'}}
+            thumbColor={isActive ? '#f4f3f4' : '#f4f3f4'}
+            onValueChange={handleSwitch}
+            value={isActive}/>
+       </View>
+
+      
     </View>
 }
 
-function RecurringSchedule(){
-    const schedules = [{time: "08:55AM", repeat: [5,6]}, {time: "08:57AM", repeat: [5,6]}]
-    const [isParentVisible, setIsParentVisible] = useState(true)
+function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurringModalOn}){
+    // const [isParentVisible, setIsParentVisible] = useState(reccuringScheduleVisible)
+
     const [addScheduleVisible, setAddScheduleVisible] = useState(false)
     
+
+
+    let existingSchedules = [];
+    onSnapshot(deviceRef, docSnapshot=> {
+        if(docSnapshot.exists()){
+            // feedTime.push(docSnapshot.data().feedTimes)
+            docSnapshot.data().reccuringSched.forEach(sched=> {
+                existingSchedules.push(sched)
+            })
+            
+        }
+    })
+
     function handleScheduleVisible(){
         setAddScheduleVisible(state=> !state);
     }
     return <Modal
     animationType='slide'
     transparent={true}
-    visible={isParentVisible}
+    visible={reccuringScheduleVisible}
     >
          <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
-            <View style={{ backgroundColor: "#F5F5F5", height: 600, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
-                <TouchableHighlight style={{alignSelf: "flex-end", padding: 10}} onPress={()=> setIsParentVisible(false)}>
-                     <AntDesign name="close" size={24} color="black" />
-                </TouchableHighlight>
-                {/* <View style={{height: "70%", width: "90%", backgroundColor: "yellow"}}>
-                    
-                </View> */}
-                {/* {
-                    schedules.map((item)=> {
-                        return <Text>{item.time}</Text>
-                    })
-                } */}
+            <View style={{ backgroundColor: "#F5F5F5", height: 600, width: "90%",  justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+                <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%", backgroundColor: "#35374B"}}>
+                    <Text style={{alignSelf: "center", marginLeft: 10, color: "#fff", textTransform: "uppercase", fontSize: 16, fontWeight: "500"}}>Recurring Schedules</Text>
+                    <TouchableOpacity style={{alignSelf: "flex-end", padding: 10}} onPress={handleReccurringModalOn}>
+                     <AntDesign name="close" size={24} color="#fff" />
+                   </TouchableOpacity>
+                </View>
+            
 
                 <FlatList
-                    data={schedules}
-                    renderItem={({item})=> <Schedule item={item}/>}
-                    keyExtractor={item=> item.time}
+                    data={existingSchedules}
+                    renderItem={({item})=> <Schedule item={item} deviceRef={deviceRef} existingSchedules={existingSchedules}/>}
+                    keyExtractor={(item,index)=> index}
                     style={{width: "100%", height: "80%"}}
                 />
-                <AddTimeSched isVisible={addScheduleVisible} handleVisibility ={handleScheduleVisible}/>
+                <AddTimeSched isVisible={addScheduleVisible} handleVisibility ={handleScheduleVisible} deviceRef={deviceRef} existingSchedules={existingSchedules}/>
                 <TouchableOpacity style={{padding: 20}} onPress={handleScheduleVisible}>
                      <AntDesign name="pluscircleo" size={40} color="black" />
                 </TouchableOpacity>
@@ -167,18 +255,120 @@ function RecurringSchedule(){
     </Modal>
 }
 
-function AddTimeSched({isVisible, handleVisibility}){
+function AddTimeSched({isVisible, handleVisibility, deviceRef}){
+    const dates = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const [pickedTime, setPickedTime] = useState(new Date());
+    const [stringedTime, setStringedTime] = useState("")
+    const [showTimePicker, setShowTimePicker] = useState(false);
+    const [datesSelected, setDatesSelected] = useState([]);
+    const [portionSelected, setPortionSelected] = useState(1)
+    const portions = [1,2,3,4,5,6,7,8,9,10]
+ 
+ 
+    function handlePortionSelection(numSelected){
+        setPortionSelected(numSelected)
+    }
+    let existingSchedules = [];
+    onSnapshot(deviceRef, docSnapshot=> {
+        if(docSnapshot.exists()){
+            // feedTime.push(docSnapshot.data().feedTimes)
+            docSnapshot.data().reccuringSched.forEach(sched=> {
+                existingSchedules.push(sched)
+            })
+            
+        }
+    })
+
+    function handleAddTimeSched(){
+        if(datesSelected.length < 1) {
+            alert("Please set day(s)")
+            return;
+        }
+        const newTimeSched = {
+            id: new Date().getTime(),
+            repeat: [...datesSelected],
+            time: stringedTime,
+            isOn: true, 
+            portion: portionSelected
+        }
+        updateDoc(deviceRef, {
+            reccuringSched: [newTimeSched, ...existingSchedules]
+        }).then(()=> {
+            handleVisibility(false)
+        })
+    }
+    function handleDateSelection(date){
+        if(datesSelected.includes(date)) {
+            const removed = datesSelected.filter(d=> d!==date);
+            setDatesSelected(removed)
+            return;
+        }
+        setDatesSelected(dates=> [...dates, date])
+    }
+    function handleTimeChange(event, selectedTime){
+            const currentTime = selectedTime
+            setPickedTime(new Date(currentTime));
+            setStringedTime(`${new Date(currentTime).toLocaleTimeString()}`)
+            setShowTimePicker(false)
+        }
+        
+        // console.log(pickedTime)
     return <Modal
         animationType='slide'
         transparent={true}
         visible={isVisible}
         >
          <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
-            <View style={{ backgroundColor: "#F5F5F5", height: 400, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
-                <Text>HERE YOU CAN ADD TIME SCHED</Text>
-                <TouchableOpacity onPress={handleVisibility}>
-                    <Text>Close</Text>
+            <View style={{ backgroundColor: "#F5F5F5",height: 450,  width: "90%", borderRadius: 10, alignItems: "center",gap:35,  elevation: 8}}>
+                 <TouchableOpacity style={{alignSelf: "flex-end", padding: 10}} onPress={handleVisibility}>
+                    <AntDesign name="close" size={24} color="black" />
                 </TouchableOpacity>
+
+                <View style={{flexDirection: "row", gap: 10}}>
+                {
+                    dates.map(date=> {
+                        return <TouchableOpacity key={date} onPress={()=> handleDateSelection(date)} style={datesSelected.includes(date) ? {padding: 5, borderWidth: 2, borderColor: "#41B06E", borderRadius: 10, backgroundColor: "#EEEEEE"} : {padding: 8}}>
+                            <Text style={{color: "#262C28", fontSize: 14, fontWeight: "500"}}>{date}</Text>
+                        </TouchableOpacity>
+                    })
+                }
+                </View>
+               <View style={{flexDirection: "row", justifyContent: "center", gap: 20, alignItems: "center"}}>
+                <TouchableOpacity style={{backgroundColor: "#262C28", padding: 5, borderRadius: 5, flexDirection: "row", gap: 10, alignItems: "center", justifyContent:"center"}} onPress={()=> setShowTimePicker(true)}>
+                    <AntDesign name="clockcircleo" size={18} color="#fff" />
+                        <Text style={{color: "#fff"}}>Set time</Text>
+                    </TouchableOpacity>
+                    <Text style={{fontSize: 16, fontWeight: "500"}}>{stringedTime || new Date().toLocaleTimeString()}</Text>
+               </View>
+                {
+                    showTimePicker && <DateTimePicker 
+                    mode={"time"}
+                    value={pickedTime}
+                    onChange={handleTimeChange}
+                    onTouchCancel={()=>setShowTimePicker(false)} 
+                />
+                }
+
+                <View style={{height: 80, width: "80%"}}>
+                <Text style={{marginBottom: 10, textTransform: "uppercase", color: "#262C28", fontSize: 14, fontWeight: "500"}}>Set Portion</Text>
+                <ScrollView horizontal >
+                <View style={{flexDirection: "row", gap: 40,height: 30 }}>
+                  { 
+                    portions.map((num)=> {
+                        return <TouchableHighlight key={num} style={portionSelected === num ? portionStyle.selected : portionStyle.notSelected} onPress={()=> handlePortionSelection(num)}>
+                            <Text style={portionSelected  === num ?portionStyle.textSelected : portionStyle.textNotSelected}>{num}</Text>
+                        </TouchableHighlight>
+                    })
+                 }
+                </View>
+                </ScrollView>
+                </View>
+                <TouchableOpacity onPress={handleAddTimeSched} style={{padding:8, flexDirection: "row", gap: 5, justifyContent:"center", alignItems:"center", backgroundColor:"#262C28", borderRadius: 8}}>
+                    <Feather name="save" size={20} color="#fff" />
+                    <Text style={{textTransform: "uppercase", color: "#fff"}}>Save configuration</Text>
+                </TouchableOpacity>
+
+               
             </View>
         </View>
     </Modal>
@@ -194,7 +384,7 @@ function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
             
             <View style={{backgroundColor: "#fff", height: 480, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
            
-                <Text style={{textTransform: "uppercase", fontWeight: "bold", fontSize: 18}}>{feedTimes.length > 0 ? "Your dog's feeding schedules:" : "No Feeding Schedules Yet"}</Text>
+                <Text style={{textTransform: "uppercase", fontWeight: "bold", fontSize: 16}}>{feedTimes.length > 0 ? "Your dog's custom feeding schedules:" : "No Feeding Schedules Yet"}</Text>
                     {feedTimes?.sort((a,b)=> a-b).map((time, i)=> {
                         const timeStr = new Date(time).toLocaleTimeString()
                         const dateStr = new Date(time).toDateString()
@@ -216,7 +406,7 @@ function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
 }
 
 function Portion({portionSelected,setPortionSelected, deviceRef }){
-    const portions = [1,2,3,4,5]
+    const portions = [1,2,3,4,5,6,7,8,9,10]
 
     useEffect(()=>{
         updateDoc(deviceRef, {
@@ -226,23 +416,25 @@ function Portion({portionSelected,setPortionSelected, deviceRef }){
 
     return  <View style={{ width: "90%", justifyContent: "space-between", alignItems:"center", gap: 10}}>
     <Text style={{textTransform: "uppercase"}}>Proportion</Text>
-     <View style={{flexDirection: "row", width: "90%",  justifyContent: "space-between", gap:10}}>
+     <ScrollView horizontal style={{width: "90%"}}>
+        <View style={{flexDirection: "row", width: "90%",  gap: 50,  justifyContent: "space-between",}}>
         {portions.map(p => {
-            return <TouchableOpacity onPress={() => setPortionSelected(p)} key={p} style={{flex:1}} >
+            return <TouchableOpacity onPress={() => setPortionSelected(p)} key={p}  >
                 <View style={p===portionSelected ? portionStyle.selected : portionStyle.notSelected}>
                     <Text style={p===portionSelected ? portionStyle.textSelected : portionStyle.textNotSelected}>{p}</Text>
                 </View>
 
             </TouchableOpacity>
         })}
-     </View>
+        </View>
+     </ScrollView>
 </View>
 }
 
 const portionStyle = StyleSheet.create({
    
-    selected:  {height: 30, borderRadius: 8, justifyContent: "center", alignItems: "center", backgroundColor: "#000", color: "#fff"},
-    notSelected:  {height: 30, justifyContent: "center", alignItems: "center", color:"#000"},
+    selected:  {height: 30, width: 30, borderRadius: 8, justifyContent: "center", alignItems: "center", backgroundColor: "#000", color: "#fff"},
+    notSelected:  {height: 30, width: 30,justifyContent: "center", alignItems: "center", color:"#000"},
     textSelected: {color: "#fff"},
     textNotSelected: {color: "#000"}
 })
