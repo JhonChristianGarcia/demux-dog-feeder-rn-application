@@ -130,19 +130,19 @@ function InformationModal({infoModalOpen, handleInfoModal}){
 
     return (
         <Modal
-          animationType='slide'
-          transparent={true}
-          visible={infoModalOpen}
-        >
-          <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
-            <View style={{backgroundColor: "#fff", height: 350, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
-            <TouchableOpacity onPress={handleInfoModal} style={{alignSelf: "flex-end", marginRight: 10, marginBottom: -20}}>
-              <AntDesign name="closecircle" size={24} color="black" />
-            </TouchableOpacity>
-              <Image style={{width: "95%", height: "100%"}} source={require("./../assets/images/portion.png")}></Image>
-            </View>
-          </View>
-        </Modal>
+  animationType='slide'
+  transparent={true}
+  visible={infoModalOpen}
+>
+  <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
+    <View style={{backgroundColor: "#fff", height: 400, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+      <TouchableOpacity onPress={handleInfoModal} style={{position: "absolute", top: 10, right: 10, zIndex: 1}}>
+        <AntDesign name="closecircle" size={24} color="black" />
+      </TouchableOpacity>
+      <Image resizeMode="contain" style={{width: "100%", height: "100%"}} source={require("./../assets/images/portion.png")}></Image>
+    </View>
+  </View>
+</Modal>
       )
 }
 
