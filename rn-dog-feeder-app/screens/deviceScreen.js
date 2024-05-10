@@ -265,8 +265,8 @@ function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurrin
             
                 <FlatList
                     data={existingSchedules}
-                    renderItem={({item, index})=> <Schedule key={index} item={item} deviceRef={deviceRef} existingSchedules={existingSchedules}/>}
-                    keyExtractor={(item,index)=> index}
+                    renderItem={({item})=> <Schedule item={item} deviceRef={deviceRef} existingSchedules={existingSchedules}/>}
+                    keyExtractor={(item)=> item.id}
                     style={{width: "100%", height: "80%"}}
                 />
                 <AddTimeSched isVisible={addScheduleVisible} handleVisibility ={handleScheduleVisible} deviceRef={deviceRef} existingSchedules={existingSchedules}/>
