@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker'
 // import firestore from '@react-native-firebase/firestore';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { FontAwesome, FontAwesome6, AntDesign, Feather, MaterialIcons, Ionicons} from '@expo/vector-icons';
+import { FontAwesome, FontAwesome6, AntDesign, Feather, MaterialIcons, Ionicons, Entypo} from '@expo/vector-icons';
 
 
 
@@ -71,11 +71,11 @@ const DeviceScreen = ({route}) => {
         }).then(()=> {
             alert("Your dog has been fed!")
         })
-        setTimeout(()=> {
-            updateDoc(deviceRef, {
-                motorOn: false 
-            })
-        }, portionSelected * 1000)
+        // setTimeout(()=> {
+        //     updateDoc(deviceRef, {
+        //         motorOn: false 
+        //     })
+        // }, portionSelected * 1000)
     }
     
     return <SafeAreaView >
@@ -92,7 +92,12 @@ const DeviceScreen = ({route}) => {
         </View>
 
         <View style={{justifyContent: "center", alignItems:"center"}}>
-            <Text>Device ID: {device}</Text>
+           <View style={{flexDirection: "row-reverse", gap: 10}}>
+           <TouchableOpacity onPress={()=> navigator.navigate("Camera")}>
+           <Entypo name="video-camera" size={20} color="black" />
+            </TouchableOpacity>
+            <Text style={{fontSize: 14, fontWeight: "500", textTransform: "uppercase"}}>Device ID: {device}</Text>
+           </View>
             <Image style={{width: 200,  height: 280}} source={require("../assets/images/feeder1.png")} resizeMode='contain'></Image>
         </View>
 

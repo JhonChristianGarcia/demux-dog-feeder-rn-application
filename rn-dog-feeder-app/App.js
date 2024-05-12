@@ -2,7 +2,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer, createNavigationContainerRef } from "@react-navigation/native";
 import { useCallback, useState, useEffect} from "react";
-import { Login, SignUp, Welcome, Home, DeviceScreen, Account} from "./screens";
+import { Login, SignUp, Welcome, Home, DeviceScreen, Account, Camera} from "./screens";
 import { StyleSheet } from "react-native";
 import { doc, getDoc } from "firebase/firestore";
 import { initializeApp } from '@firebase/app';
@@ -18,9 +18,6 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [currentArray, setCurrentArray] = useState(null);
- 
-  
-
 
   return (
     <SafeAreaProvider>
@@ -32,6 +29,7 @@ export default function App() {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="Account" component={Account} />
+          <Stack.Screen name="Camera" component={Camera} />
           <Stack.Screen name="Home" >
            {props => <Home {...props} currentArray={currentArray} setCurrentArray={setCurrentArray} />}
           </Stack.Screen>
