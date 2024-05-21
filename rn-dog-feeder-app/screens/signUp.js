@@ -6,6 +6,7 @@ import {auth} from "../auth/config"
 import { collection, getFirestore, addDoc, doc, setDoc } from "firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
 
+import { moderateScale, verticalScale} from "../utils/sizeModerator";
 const db = getFirestore();
 const userRef = collection(db, 'users');
 // console.log(userRef)
@@ -58,16 +59,16 @@ const SignUp = ({navigation}) => {
       >
        <View>
         <TouchableWithoutFeedback onPress={()=> navigator.navigate("Welcome")}>
-          <Text style={{textTransform: "uppercase", color: "#000", fontSize: 70, fontWeight: "300"}}>&#8249;</Text>
+          <Text style={{textTransform: "uppercase", color: "#000", fontSize: moderateScale(68), fontWeight: "300"}}>&#8249;</Text>
         </TouchableWithoutFeedback>
 
-          <Text style={{textTransform: "uppercase", color: "#000", fontSize: 28, fontWeight: "900"}}>Sign Up</Text>
+          <Text style={{textTransform: "uppercase", color: "#000", fontSize: moderateScale(26), fontWeight: "900"}}>Sign Up</Text>
        </View>
 
 
         <View style={{ gap: 30}}>
-          <TextInput placeholder="Email address" value={inputEmail} onChangeText={text=> setinputEmail(text)} style={{fontSize: 18,height: 50, borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
-          <TextInput placeholder="Password" value={inputPassword} secureTextEntry onChangeText={text=> setInputPassword(text)} style={{fontSize: 18,height: 50, borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
+          <TextInput placeholder="Email address" value={inputEmail} onChangeText={text=> setinputEmail(text)} style={{fontSize: 18,height: verticalScale(50), borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
+          <TextInput placeholder="Password" value={inputPassword} secureTextEntry onChangeText={text=> setInputPassword(text)} style={{fontSize: 18,height: verticalScale(50), borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
         </View>
 
        

@@ -40,7 +40,6 @@ export default function Camera() {
             </View>
           <WebView
             source={{ html: ws_page }}
-            // style={styles.webview}
           />
         </View>
       </View>

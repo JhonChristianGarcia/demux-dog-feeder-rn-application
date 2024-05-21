@@ -10,7 +10,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 // import firestore from '@react-native-firebase/firestore';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { FontAwesome, FontAwesome6, AntDesign, Feather, MaterialIcons, Ionicons, Entypo} from '@expo/vector-icons';
-
+import { horizontalScale, verticalScale, moderateScale } from "./../utils/sizeModerator"
 
 
 // // Enable offline persistence
@@ -81,39 +81,39 @@ const DeviceScreen = ({route}) => {
     return <SafeAreaView >
         <View style={{flexDirection: "row", alignItems: "center", justifyContent:"space-around", height: "15%", }}>
             <TouchableWithoutFeedback onPress={()=> navigator.navigate("Home")}>
-             <Text style={{textTransform: "uppercase", color: "#000", fontSize: 70, fontWeight: "300", padding:10, paddingBottom: 20}}>&#8249;</Text>
+             <Text style={{textTransform: "uppercase", color: "#000", fontSize: moderateScale(60), fontWeight: "300", padding:10, paddingBottom: 20}}>&#8249;</Text>
             </TouchableWithoutFeedback>
             <View style={{flex:1, justifyContent: "center",  alignItems:"center", height: 100}}>
-                <Text style={{fontSize: 18, fontWeight: "700", textTransform: "uppercase"}}>Demux Dog Feeder</Text>
+                <Text style={{fontSize: moderateScale(16), fontWeight: "700", textTransform: "uppercase"}}>Demux Dog Feeder</Text>
             </View>
-            <TouchableHighlight onPress={handleFeedTimeModal} style={{marginRight: 10}}>
-                <FontAwesome5 name="user-clock" size={22} color="black" />
+            <TouchableHighlight onPress={handleFeedTimeModal} style={{marginRight: horizontalScale(10)}}>
+                <FontAwesome5 name="user-clock" size={moderateScale(20)} color="black" />
             </TouchableHighlight>
         </View>
 
         <View style={{justifyContent: "center", alignItems:"center"}}>
-           <View style={{flexDirection: "row-reverse", gap: 10}}>
+           <View style={{flexDirection: "row-reverse", gap: moderateScale(10)}}>
            <TouchableOpacity onPress={()=> navigator.navigate("Camera")}>
-           <Entypo name="video-camera" size={20} color="black" />
+            <Entypo name="video-camera" size={moderateScale(18)} color="black" />
             </TouchableOpacity>
-            <Text style={{fontSize: 14, fontWeight: "500", textTransform: "uppercase"}}>Device ID: {device}</Text>
+            <Text style={{fontSize: moderateScale(14), fontWeight: "500", textTransform: "uppercase"}}>Device ID: {device}</Text>
            </View>
-            <Image style={{width: 200,  height: 280}} source={require("../assets/images/feeder1.png")} resizeMode='contain'></Image>
+            <Image style={{width: horizontalScale(180),  height: verticalScale(300)}} source={require("../assets/images/feeder1.png")} resizeMode='contain'></Image>
         </View>
 
-        <View style={{justifyContent:"center", alignItems: "center",  height: 300, width: "100%", gap: 10}}>
-            <TouchableOpacity style={{ width: "90%", backgroundColor: "#000", borderWidth: 2, padding: 10, alignItems: "center"}} onPress={updateMotorState}>
-                 <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Feed now</Text>
+        <View style={{justifyContent:"center", alignItems: "center",  height: verticalScale(280), width: "100%", gap: moderateScale(10)}}>
+            <TouchableOpacity style={{ width: "90%", backgroundColor: "#000", borderWidth: 2, padding: moderateScale(10), alignItems: "center"}} onPress={updateMotorState}>
+                 <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: moderateScale(16), padding: moderateScale(5)}}>Feed now</Text>
             </TouchableOpacity> 
 
         
 
-            <TouchableOpacity style={{width: "90%", backgroundColor: "#FFF", borderWidth: 2, padding: 10, alignItems: "center"}} onPress={handleReccurringModalOn}>
-                 <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Set Scheduled Feeding</Text>
+            <TouchableOpacity style={{width: "90%", backgroundColor: "#FFF", borderWidth: 2, padding: moderateScale(10), alignItems: "center"}} onPress={handleReccurringModalOn}>
+                 <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: moderateScale(16), padding: 5}}>Set Scheduled Feeding</Text>
             </TouchableOpacity> 
 
             <TouchableOpacity style={{width: "90%", backgroundColor: "#FFF", borderWidth: 2, padding: 10, alignItems: "center"}} onPress={()=> setDateModalOpen(true)}>
-            <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Set Custom Date</Text>
+            <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: moderateScale(16), padding: 5}}>Set Custom Date</Text>
             </TouchableOpacity> 
 
           
@@ -140,9 +140,9 @@ function InformationModal({infoModalOpen, handleInfoModal}){
   visible={infoModalOpen}
 >
   <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
-    <View style={{backgroundColor: "#fff", height: 400, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+    <View style={{backgroundColor: "#fff", height: verticalScale(350), width: "90%", borderRadius: moderateScale(2), justifyContent: "center", alignItems: "center", gap:moderateScale(5),  elevation: 8}}>
       <TouchableOpacity onPress={handleInfoModal} style={{position: "absolute", top: 10, right: 10, zIndex: 1}}>
-        <AntDesign name="closecircle" size={24} color="black" />
+        <AntDesign name="closecircle" size={moderateScale(22)} color="black" />
       </TouchableOpacity>
       <Image resizeMode="contain" style={{width: "100%", height: "100%"}} source={require("./../assets/images/portion.png")}></Image>
     </View>
@@ -209,7 +209,7 @@ function Schedule({item, deviceRef}){
 
 
 
-    return <View style={{ height: 80, padding: 15, backgroundColor: "#fff", width: "95%", alignSelf: "center", flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderRadius: 10,  marginBottom: 10}}>
+    return <View style={{ height: verticalScale(80), padding: 15, backgroundColor: "#fff", width: "95%", alignSelf: "center", flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderRadius: moderateScale(10),  marginBottom: 10}}>
         <View>
              <Text style={{fontSize: 20, fontWeight: "600", color: "#262C28"}}>{item.time}</Text>
            <View style={{flexDirection: "row"}}>
@@ -260,11 +260,11 @@ function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurrin
     visible={reccuringScheduleVisible}
     >
          <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
-            <View style={{ backgroundColor: "#F5F5F5", height: 600, width: "90%",  justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+            <View style={{ backgroundColor: "#F5F5F5", height: verticalScale(600), width: "90%",  justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%", backgroundColor: "#35374B"}}>
-                    <Text style={{alignSelf: "center", marginLeft: 10, color: "#fff", textTransform: "uppercase", fontSize: 16, fontWeight: "500"}}>Recurring Schedules</Text>
+                    <Text style={{alignSelf: "center", marginLeft: 10, color: "#fff", textTransform: "uppercase", fontSize: moderateScale(15), fontWeight: "500"}}>Recurring Schedules</Text>
                     <TouchableOpacity style={{alignSelf: "flex-end", padding: 10}} onPress={handleReccurringModalOn}>
-                     <AntDesign name="close" size={24} color="#fff" />
+                     <AntDesign name="close" size={moderateScale(22)} color="#fff" />
                    </TouchableOpacity>
                 </View>
             
@@ -276,7 +276,7 @@ function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurrin
                 />
                 <AddTimeSched isVisible={addScheduleVisible} handleVisibility ={handleScheduleVisible} deviceRef={deviceRef} existingSchedules={existingSchedules}/>
                 <TouchableOpacity style={{padding: 20}} onPress={handleScheduleVisible}>
-                     <AntDesign name="pluscircleo" size={40} color="black" />
+                     <AntDesign name="pluscircleo" size={moderateScale(38)} color="black" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -290,7 +290,7 @@ function AddTimeSched({isVisible, handleVisibility, deviceRef}){
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [datesSelected, setDatesSelected] = useState([]);
     const [portionSelected, setPortionSelected] = useState(1)
-    const portions = [1,2,3,4,5,6,7]
+    const portions = [1,2,3,4,5,6,7,8,9,10]
  
  
     function handlePortionSelection(numSelected){
@@ -347,16 +347,16 @@ function AddTimeSched({isVisible, handleVisibility, deviceRef}){
         visible={isVisible}
         >
          <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
-            <View style={{ backgroundColor: "#F5F5F5",height: 450,  width: "90%", borderRadius: 10, alignItems: "center",gap:35,  elevation: 8}}>
+            <View style={{ backgroundColor: "#F5F5F5",height: verticalScale(450),  width: "90%", borderRadius: 10, alignItems: "center",gap:35,  elevation: 8}}>
                  <TouchableOpacity style={{alignSelf: "flex-end", padding: 10}} onPress={handleVisibility}>
-                    <AntDesign name="close" size={24} color="black" />
+                    <AntDesign name="close" size={moderateScale(22)} color="black" />
                 </TouchableOpacity>
 
-                <View style={{flexDirection: "row", gap: 10}}>
+                <View style={{flexDirection: "row", gap: 10, width: "100%", alignItems:"center", justifyContent: "center"}}>
                 {
                     dates.map(date=> {
                         return <TouchableOpacity key={date} onPress={()=> handleDateSelection(date)} style={datesSelected.includes(date) ? {padding: 5, borderWidth: 2, borderColor: "#41B06E", borderRadius: 10, backgroundColor: "#EEEEEE"} : {padding: 8}}>
-                            <Text style={{color: "#262C28", fontSize: 14, fontWeight: "500"}}>{date}</Text>
+                            <Text style={{color: "#262C28", fontSize: moderateScale(14), fontWeight: "500"}}>{date}</Text>
                         </TouchableOpacity>
                     })
                 }
@@ -377,10 +377,10 @@ function AddTimeSched({isVisible, handleVisibility, deviceRef}){
                 />
                 }
 
-                <View style={{height: 80, width: "80%"}}>
+                <View style={{height: verticalScale(90), width: "80%"}}>
                 <Text style={{marginBottom: 10, textTransform: "uppercase", color: "#262C28", fontSize: 14, fontWeight: "500"}}>Set Portion</Text>
-                <ScrollView horizontal >
-                <View style={{flexDirection: "row", gap: 40,height: 30 }}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={{flexDirection: "row", gap: 40,height: verticalScale(30) }}>
                   { 
                     portions.map((num)=> {
                         return <TouchableHighlight key={num} style={portionSelected === num ? portionStyle.selected : portionStyle.notSelected} onPress={()=> handlePortionSelection(num)}>
@@ -410,7 +410,7 @@ function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
     >
         <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
             
-            <View style={{backgroundColor: "#fff", height: 480, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+            <View style={{backgroundColor: "#FFF", height: verticalScale(480), width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
            
                 <Text style={{textTransform: "uppercase", fontWeight: "bold", fontSize: 16}}>{feedTimes.length > 0 ? "Your dog's custom feeding schedules:" : "No Feeding Schedules Yet"}</Text>
                     {feedTimes?.sort((a,b)=> a-b).map((time, i)=> {
@@ -419,7 +419,7 @@ function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
                         const combinedStr = `${dateStr} ${timeStr}`
                     return <View key={i} style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                         <AntDesign name="arrowright" size={18} color="black" />
-                        <Text style={{ marginLeft: 8, fontWeight: "bold", fontSize: 16}}>{combinedStr}</Text>
+                        <Text style={{ marginLeft: 8, fontWeight: "bold", fontSize: moderateScale(16)}}>{combinedStr}</Text>
                     </View>}) 
                     }
                  <TouchableWithoutFeedback onPress={handleFeedTimeModal}>
@@ -434,7 +434,7 @@ function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
 }
 
 function Portion({portionSelected,setPortionSelected, deviceRef,handleInfoModal }){
-    const portions = [1,2,3,4,5,6,7]
+    const portions = [1,2,3,4,5,6,7,8,9,10]
 
     useEffect(()=>{
         updateDoc(deviceRef, {
@@ -446,7 +446,7 @@ function Portion({portionSelected,setPortionSelected, deviceRef,handleInfoModal 
     <View style={{flexDirection: "row", justifyContent:"center", alignItems: "center", gap: 10}}>
     <Text style={{textTransform: "uppercase"}}>Proportion</Text>
    <TouchableOpacity onPress={handleInfoModal}>
-     <Ionicons name="information-circle" size={22} color="black" />
+     <Ionicons name="information-circle" size={moderateScale(22)} color="black" />
    </TouchableOpacity>
     </View>
      <ScrollView horizontal style={{width: "90%"}}>
@@ -532,7 +532,7 @@ function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, devic
     visible={dateModalOpen}
     >
           <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
-            <View style={{backgroundColor: "#fff", height: 480, width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+            <View style={{backgroundColor: "#fff", height: verticalScale(380), width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
                 <View>
                 {showDatePicker && <DateTimePicker 
                     mode={'date'}

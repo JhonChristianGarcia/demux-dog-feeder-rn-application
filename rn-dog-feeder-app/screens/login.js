@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import {  signOut, signInWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
 import {auth} from "../auth/config"
+import { moderateScale, verticalScale } from "../utils/sizeModerator";
 
 
 
@@ -54,21 +55,21 @@ const Login = ({navigation}) => {
       >
        <View>
         <TouchableWithoutFeedback onPress={()=> navigator.navigate("Welcome")}>
-          <Text style={{textTransform: "uppercase", color: "#000", fontSize: 70, fontWeight: "300"}}>&#8249;</Text>
+          <Text style={{textTransform: "uppercase", color: "#000", fontSize: moderateScale(68), fontWeight: "300"}}>&#8249;</Text>
         </TouchableWithoutFeedback>
 
-          <Text style={{textTransform: "uppercase", color: "#000", fontSize: 28, fontWeight: "900"}}>Log in</Text>
+          <Text style={{textTransform: "uppercase", color: "#000", fontSize: moderateScale(26), fontWeight: "900"}}>Log in</Text>
        </View>
 
 
         <View style={{ gap: 30}}>
-          <TextInput placeholder="Email address" value={inputEmail} onChangeText={text=> setinputEmail(text)} style={{fontSize: 18,height: 50, borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
-          <TextInput placeholder="Password" value={inputPassword} secureTextEntry onChangeText={text=> setInputPassword(text)} style={{fontSize: 18,height: 50, borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
+          <TextInput placeholder="Email address" value={inputEmail} onChangeText={text=> setinputEmail(text)} style={{fontSize:  moderateScale(16),height: verticalScale(50), borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
+          <TextInput placeholder="Password" value={inputPassword} secureTextEntry onChangeText={text=> setInputPassword(text)} style={{fontSize: 18,height: verticalScale(50), borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
         </View>
 
        
         <TouchableOpacity style={{backgroundColor: "#000", borderWidth: 2, padding: 10, borderColor: "#fff", alignItems: "center"}} onPress={handleSignIn}>
-          <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Log in</Text>
+          <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: moderateScale(16), padding: 5}}>Log in</Text>
         </TouchableOpacity> 
       
       </KeyboardAvoidingView>
