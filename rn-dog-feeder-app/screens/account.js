@@ -26,14 +26,20 @@ const Account = () => {
     return (<SafeAreaView style={{flex:1}}>
       <ImageBackground
       resizeMode= 'cover'
-        source={require('../assets/images/dogwp.jpg')}
+        source={require('../assets/images/demuxdogpng.png')}
         style={styles.background}
   
       >
-         <TouchableOpacity style={{backgroundColor: "#000", width: "50%", justifyContent: "center", alignItems: "center", borderWidth: 2, padding: 10, marginBottom: 100, alignItems: "center", flexDirection: "row", gap: 5}} onPress={handleLogout}>
-       <FontAwesome name="user" size={24} color="#fff" />
-          <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Log out</Text>
+         {/* <TouchableOpacity style={{backgroundColor: "#FFFFFF", width: "50%", justifyContent: "center", alignItems: "center", borderWidth: 2, padding: 10, marginBottom: 100, alignItems: "center", flexDirection: "row", gap: 5}}>
+       <FontAwesome name="user" size={24} color="#000" />
+          <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Log out</Text>
+        </TouchableOpacity>  */}
+
+        <View style={{width: "80%", marginBottom: "20%"} }>
+        <TouchableOpacity style={{backgroundColor: "none", borderWidth: 2, padding: 10, borderColor: "#fff", alignItems: "center"}}  onPress={handleLogout}>
+          <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Log Out</Text>
         </TouchableOpacity> 
+       </View>
       
       </ImageBackground>
     </SafeAreaView>)
