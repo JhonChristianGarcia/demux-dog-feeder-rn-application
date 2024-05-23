@@ -37,7 +37,7 @@ const Account = () => {
 
         <View style={{width: "80%", marginBottom: "20%"} }>
         <TouchableOpacity style={{backgroundColor: "none", borderWidth: 2, padding: 10, borderColor: "#fff", alignItems: "center"}}  onPress={handleLogout}>
-          <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Log Out</Text>
+          <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Log Out</Text>
         </TouchableOpacity> 
        </View>
       
