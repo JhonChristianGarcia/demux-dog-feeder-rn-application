@@ -155,7 +155,7 @@ function InformationModal({infoModalOpen, handleInfoModal}){
 }
 
 
-function Schedule({item, deviceRef}){
+function Schedule({item, deviceRef, setDeleteCount}){
     let existingSchedules = [];
     
     onSnapshot(deviceRef, docSnapshot=> {
@@ -179,7 +179,11 @@ function Schedule({item, deviceRef}){
     function handleDeleteSchedule(){
         updateDoc(deviceRef, {
             reccuringSched: existingSchedules.filter(sched=> sched.id !== item.id)
-        }).then(()=> console.log("Document deleted"))
+        }).then(()=>{ 
+            setDeleteCount(count=> count+1)
+            console.log("Document deleted")
+            
+        })
     }
 
     if(!existingSchedules) return;
@@ -238,11 +242,10 @@ function Schedule({item, deviceRef}){
 }
 
 function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurringModalOn}){
+    console.log(1)
     // const [isParentVisible, setIsParentVisible] = useState(reccuringScheduleVisible)
-
-    const [addScheduleVisible, setAddScheduleVisible] = useState(false)
-    
-
+    const [addScheduleVisible, setAddScheduleVisible] = useState(false);
+    const [deleteCount, setDeleteCount] = useState(0);
     let existingSchedules = [];
     onSnapshot(deviceRef, docSnapshot=> {
         if(docSnapshot.exists()){
@@ -273,7 +276,7 @@ function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurrin
             
                 <FlatList
                     data={existingSchedules}
-                    renderItem={({item})=> <Schedule item={item} deviceRef={deviceRef} existingSchedules={existingSchedules}/>}
+                    renderItem={({item})=> <Schedule item={item} deviceRef={deviceRef} setDeleteCount={setDeleteCount} />}
                     keyExtractor={(item, i)=> i}
                     style={{width: "100%", height: "80%"}}
                 />

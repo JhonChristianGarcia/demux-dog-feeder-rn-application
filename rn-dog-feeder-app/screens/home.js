@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getFirestore, collection, getDocs, getDoc, doc, onSnapshot, updateDoc, addDoc, setDoc, FieldValue, onSnapshotsInSync} from 'firebase/firestore';
 import { onAuthStateChanged } from '@firebase/auth';    
 import { FontAwesome, FontAwesome6, AntDesign} from '@expo/vector-icons';
+import { horizontalScale, moderateScale, verticalScale } from '../utils/sizeModerator';
 export const db = getFirestore();
 
 
@@ -117,7 +118,7 @@ const Home = ({navigation, currentArray, setCurrentArray}) => {
              <CustomModal modalOpen={modalOpen} setModalOpen={setModalOpen} inputDevice={inputDevice} setInputDevice={setInputDevice} handleAddDevice={handleAddDevice}/>
          
          
-            <ScrollView style={{ width: "90%", backgroundColor: "#F5F5F5"}}>
+            <ScrollView style={{ width: "90%", backgroundColor: "#F5F5F5"}} showsVerticalScrollIndicator={false}>
         
                <View>
                 <Text style={{color: "#000", fontSize: 18, textTransform: "uppercase", fontWeight: "bold", padding: 10}}>All Devices</Text>
@@ -180,8 +181,8 @@ export function Device({deviceId}){
     
     return <TouchableHighlight onPress={()=> navigator.navigate(deviceId)}>
         <View style={{justifyContent:"space-between", alignItems: "center", flexDirection: "row", backgroundColor: "#FFF", marginBottom: 10, borderRadius: 10, height: 100, marginTop: 10}}>
-        <Image style={{width: 60, height: 60}} source={require("../assets/images/feeder1.png")} resizeMode='contain'></Image>
-        <Text>Device ID {deviceId}</Text>
+        <Image style={{width: horizontalScale(60), height: verticalScale(60)}} source={require("../assets/images/feeder1.png")} resizeMode='contain'></Image>
+        <Text style={{fontSize: moderateScale(13), fontWeight: "400"}}>Device ID {deviceId}</Text>
 
 
         <TouchableOpacity style={{ backgroundColor: "#000", borderWidth: 2, padding: 8, alignItems: "center", marginRight: 10}} onPress={updateMotorState}>

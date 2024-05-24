@@ -1,4 +1,5 @@
-import { StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ImageBackground } from 'react-native'
+import { StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ImageBackground, TouchableWithoutFeedback, Pressable } from 'react-native'
+import { moderateScale, horizontalScale, verticalScale } from '../utils/sizeModerator'
 import React from 'react'
 import {auth} from "../auth/config"
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -24,17 +25,24 @@ const Account = () => {
 
 
     return (<SafeAreaView style={{flex:1}}>
+     
       <ImageBackground
       resizeMode= 'cover'
-        source={require('../assets/images/demuxdogpng.png')}
+        source={require('../assets/images/doglogout.png')}
         style={styles.background}
-  
       >
+         <Pressable style={{alignSelf: "flex-start", flex: 5, width: "10%", alignItems:"center"}} onPress={()=> navigator.navigate("Home")}>
+          <Text style={{textTransform: "uppercase", color: "#000", fontSize: moderateScale(68), fontWeight: "300"}}>&#8249;</Text>
+        </Pressable>
+
          {/* <TouchableOpacity style={{backgroundColor: "#FFFFFF", width: "50%", justifyContent: "center", alignItems: "center", borderWidth: 2, padding: 10, marginBottom: 100, alignItems: "center", flexDirection: "row", gap: 5}}>
        <FontAwesome name="user" size={24} color="#000" />
           <Text style={{color:"#000", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Log out</Text>
         </TouchableOpacity>  */}
 
+
+      
+        
         <View style={{width: "80%", marginBottom: "20%"} }>
         <TouchableOpacity style={{backgroundColor: "none", borderWidth: 2, padding: 10, borderColor: "#fff", alignItems: "center"}}  onPress={handleLogout}>
           <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: 18, padding: 5}}>Log Out</Text>
