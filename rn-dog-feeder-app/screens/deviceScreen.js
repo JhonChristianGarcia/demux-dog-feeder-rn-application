@@ -98,7 +98,10 @@ const DeviceScreen = ({route}) => {
             </TouchableOpacity>
             <Text style={{fontSize: moderateScale(14), fontWeight: "500", textTransform: "uppercase"}}>Device ID: {device}</Text>
            </View>
-            <Image style={{width: horizontalScale(180),  height: verticalScale(300)}} source={require("../assets/images/feeder1.png")} resizeMode='contain'></Image>
+           <View style={{width:"100%",justifyContent: "center", alignItems:"center", }}>
+           <Image style={{width: horizontalScale(150),  height: verticalScale(320)}}  source={require("../assets/images/splash.png")} resizeMode='contain'></Image>
+
+           </View>
         </View>
 
         <View style={{justifyContent:"center", alignItems: "center",  height: verticalScale(280), width: "100%", gap: moderateScale(10)}}>
@@ -144,7 +147,7 @@ function InformationModal({infoModalOpen, handleInfoModal}){
       <TouchableOpacity onPress={handleInfoModal} style={{position: "absolute", top: 10, right: 10, zIndex: 1}}>
         <AntDesign name="closecircle" size={moderateScale(22)} color="black" />
       </TouchableOpacity>
-      <Image resizeMode="contain" style={{width: "100%", height: "100%"}} source={require("./../assets/images/portion.png")}></Image>
+      <Image resizeMode="contain" style={{width: "100%", height: "100%"}} source={require("./../assets/images/portion1.png")}></Image>
     </View>
   </View>
 </Modal>
@@ -271,7 +274,7 @@ function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurrin
                 <FlatList
                     data={existingSchedules}
                     renderItem={({item})=> <Schedule item={item} deviceRef={deviceRef} existingSchedules={existingSchedules}/>}
-                    keyExtractor={(item)=> item.id}
+                    keyExtractor={(item, i)=> i}
                     style={{width: "100%", height: "80%"}}
                 />
                 <AddTimeSched isVisible={addScheduleVisible} handleVisibility ={handleScheduleVisible} deviceRef={deviceRef} existingSchedules={existingSchedules}/>
@@ -312,6 +315,10 @@ function AddTimeSched({isVisible, handleVisibility, deviceRef}){
             alert("Please set day(s)")
             return;
         }
+        if(stringedTime === ""){
+            alert("Please set time");
+            return;
+        }
         const newTimeSched = {
             id: new Date().getTime(),
             repeat: [...datesSelected],
@@ -347,12 +354,17 @@ function AddTimeSched({isVisible, handleVisibility, deviceRef}){
         visible={isVisible}
         >
          <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
-            <View style={{ backgroundColor: "#F5F5F5",height: verticalScale(450),  width: "90%", borderRadius: 10, alignItems: "center",gap:35,  elevation: 8}}>
-                 <TouchableOpacity style={{alignSelf: "flex-end", padding: 10}} onPress={handleVisibility}>
-                    <AntDesign name="close" size={moderateScale(22)} color="black" />
-                </TouchableOpacity>
+            <View style={{ backgroundColor: "#F5F5F5",height: verticalScale(450),  width: "90%",  alignItems: "center",gap:35,  elevation: 8}}>
+                 <View style={{flexDirection: "row", justifyContent: "center", alignItems:"center", backgroundColor: "#262C28"}}>
+                    <View style={{flex: 5,  justifyContent:"center", alignItems:"center", }}>
+                        <Text style={{fontSize: moderateScale(14), fontWeight: "600", textTransform: "uppercase", color: "#FFF"}}>Add Time Schedule</Text>
+                    </View>
+                    <TouchableOpacity style={{alignSelf: "flex-end", padding: 10,}} onPress={handleVisibility}>
+                        <AntDesign name="close" size={moderateScale(22)} color="#fff" />
+                    </TouchableOpacity>
+                 </View>
 
-                <View style={{flexDirection: "row", gap: 10, width: "100%", alignItems:"center", justifyContent: "center"}}>
+                <View style={{flexDirection: "row", gap: 10, width: "100%", alignItems:"center", justifyContent: "center", borderBottomWidth: 1, borderBottomColor: "#262C28", borderTopWidth: 1, borderTopColor: "#262C28", paddingVertical: horizontalScale(10)}}>
                 {
                     dates.map(date=> {
                         return <TouchableOpacity key={date} onPress={()=> handleDateSelection(date)} style={datesSelected.includes(date) ? {padding: 5, borderWidth: 2, borderColor: "#41B06E", borderRadius: 10, backgroundColor: "#EEEEEE"} : {padding: 8}}>
@@ -449,7 +461,7 @@ function Portion({portionSelected,setPortionSelected, deviceRef,handleInfoModal 
      <Ionicons name="information-circle" size={moderateScale(22)} color="black" />
    </TouchableOpacity>
     </View>
-     <ScrollView horizontal style={{width: "90%"}}>
+     <ScrollView horizontal style={{width: "90%"}} showsHorizontalScrollIndicator={false}>
         <View style={{flexDirection: "row", width: "90%",  gap: 50,  justifyContent: "space-between",}}>
         {portions.map(p => {
             return <TouchableOpacity onPress={() => setPortionSelected(p)} key={p}  >
