@@ -242,7 +242,6 @@ function Schedule({item, deviceRef, setDeleteCount}){
 }
 
 function RecurringSchedule({deviceRef, reccuringScheduleVisible, handleReccurringModalOn}){
-    console.log(1)
     // const [isParentVisible, setIsParentVisible] = useState(reccuringScheduleVisible)
     const [addScheduleVisible, setAddScheduleVisible] = useState(false);
     const [deleteCount, setDeleteCount] = useState(0);
