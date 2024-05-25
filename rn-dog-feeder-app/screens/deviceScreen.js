@@ -99,7 +99,7 @@ const DeviceScreen = ({route}) => {
             <Text style={{fontSize: moderateScale(14), fontWeight: "500", textTransform: "uppercase"}}>Device ID: {device}</Text>
            </View>
            <View style={{width:"100%",justifyContent: "center", alignItems:"center", }}>
-           <Image style={{width: horizontalScale(150),  height: verticalScale(320)}}  source={require("../assets/images/splash.png")} resizeMode='contain'></Image>
+           <Image style={{width: horizontalScale(180),  height: verticalScale(320)}}  source={require("../assets/images/frontfinal1.png")} resizeMode='contain'></Image>
 
            </View>
         </View>
@@ -546,7 +546,8 @@ function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, devic
     visible={dateModalOpen}
     >
           <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
-            <View style={{backgroundColor: "#fff", height: verticalScale(380), width: "90%", borderRadius: 10, justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+            <View style={{backgroundColor: "#fff", height: verticalScale(380), width: "90%", justifyContent: "center", alignItems: "center", gap:20,  elevation: 8}}>
+              
                 <View>
                 {showDatePicker && <DateTimePicker 
                     mode={'date'}

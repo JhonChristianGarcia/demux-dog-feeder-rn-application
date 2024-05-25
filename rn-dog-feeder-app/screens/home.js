@@ -181,7 +181,7 @@ export function Device({deviceId}){
     
     return <TouchableHighlight onPress={()=> navigator.navigate(deviceId)}>
         <View style={{justifyContent:"space-between", alignItems: "center", flexDirection: "row", backgroundColor: "#FFF", marginBottom: 10, borderRadius: 10, height: 100, marginTop: 10}}>
-        <Image style={{width: horizontalScale(60), height: verticalScale(60)}} source={require("../assets/images/feeder1.png")} resizeMode='contain'></Image>
+        <Image style={{width: horizontalScale(60), height: verticalScale(60)}} source={require("../assets/images/side.png")} resizeMode='contain'></Image>
         <Text style={{fontSize: moderateScale(13), fontWeight: "400"}}>Device ID {deviceId}</Text>
 
 
