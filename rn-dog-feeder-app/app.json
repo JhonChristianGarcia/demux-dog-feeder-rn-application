@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "rn-dog-feeder-app",
+    "name": "Demux Dog Feeder",
     "slug": "dog-feeder-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/icon.png.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash1.png",
