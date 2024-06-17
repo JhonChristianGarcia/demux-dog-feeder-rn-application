@@ -11,7 +11,7 @@ const ws_page = `
 <img id="image" src="" width="100%" height="100%" >
 <script>
     const img = document.getElementById('image'); 
-    const WS_URL = 'ws://192.168.0.175:8898';
+    const WS_URL = 'ws://192.168.137.1:8898';
     const ws = new WebSocket(WS_URL);
     
     ws.onopen = () => console.log('Connected to ' + WS_URL); // Fix template string

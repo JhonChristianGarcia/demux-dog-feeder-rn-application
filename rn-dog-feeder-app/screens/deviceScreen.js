@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableHighlight, TouchableWithoutFeedback, Image, TouchableOpacity, Modal, Switch, FlatList, ScrollView , TextInput, ImageBackground} from 'react-native'
+import { StyleSheet, Text, View, TouchableHighlight, Pressable, TouchableWithoutFeedback, Image, TouchableOpacity, Modal, Switch, FlatList, ScrollView , TextInput, ImageBackground} from 'react-native'
 import { getFirestore, collection, getDocs, getDoc, doc, onSnapshot, updateDoc, addDoc, setDoc, FieldValue} from 'firebase/firestore';
 
 import { useEffect, useState, useRef } from 'react';
@@ -29,6 +29,9 @@ const DeviceScreen = ({route}) => {
     const navigator = useNavigation();
     const {device} = route.params;
     const deviceRef = doc(db, "device-feeder", device); 
+    const [weight, setWeight] = useState(null);
+    const [containerModalOpen, setContainerModalOpen] = useState(false);
+
 
     const [feedTimes, setFeedTimes] = useState([]);
     useEffect(()=>{
@@ -77,7 +80,16 @@ const DeviceScreen = ({route}) => {
         //     })
         // }, portionSelected * 1000)
     }
-    
+        useEffect(()=> {
+        onSnapshot(deviceRef, docSnapshot=> {
+            if(docSnapshot.exists()){
+                // feedTime.push(docSnapshot.data().feedTimes)
+                const weight = docSnapshot.data()?.weight
+                setWeight(Math.abs(weight).toFixed(2))
+            }
+        })
+    }, [weight]);
+
     return <SafeAreaView >
         <View style={{flexDirection: "row", alignItems: "center", justifyContent:"space-around", height: "15%", }}>
             <TouchableWithoutFeedback onPress={()=> navigator.navigate("Home")}>
@@ -86,9 +98,14 @@ const DeviceScreen = ({route}) => {
             <View style={{flex:1, justifyContent: "center",  alignItems:"center", height: 100}}>
                 <Text style={{fontSize: moderateScale(16), fontWeight: "700", textTransform: "uppercase"}}>Demux Dog Feeder</Text>
             </View>
-            <TouchableHighlight onPress={handleFeedTimeModal} style={{marginRight: horizontalScale(10)}}>
-                <FontAwesome5 name="user-clock" size={moderateScale(20)} color="black" />
-            </TouchableHighlight>
+            <View style={{flexDirection: "row", gap: 10}}>
+                <Pressable onPress={()=> setContainerModalOpen(true)}>
+                    <FontAwesome6 name="inbox" size={24} color="black" />
+                </Pressable>
+                <TouchableHighlight onPress={handleFeedTimeModal} style={{marginRight: horizontalScale(10)}}>
+                    <FontAwesome5 name="user-clock" size={moderateScale(20)} color="black" />
+                </TouchableHighlight>
+            </View>
         </View>
 
         <View style={{justifyContent: "center", alignItems:"center"}}>
@@ -123,6 +140,8 @@ const DeviceScreen = ({route}) => {
             <CalendarModal dateModalOpen={dateModalOpen} setDateModalOpen={setDateModalOpen} updateMotorState={updateMotorState} deviceRef={deviceRef}/>
 
             <Portion portionSelected={portionSelected} setPortionSelected={setPortionSelected} deviceRef={deviceRef} handleInfoModal={handleInfoModal} />
+            <FoodContainerModal containerModalOpen={containerModalOpen} setContainerModalOpen={setContainerModalOpen} weight={weight}/>
+
             <InformationModal infoModalOpen={infoModalOpen} handleInfoModal={handleInfoModal}/>
             <RecurringSchedule deviceRef={deviceRef} reccuringScheduleVisible={reccuringScheduleVisible} handleReccurringModalOn={handleReccurringModalOn}/>
             
@@ -133,6 +152,60 @@ const DeviceScreen = ({route}) => {
    
 }
 
+
+function FoodContainerModal({containerModalOpen, setContainerModalOpen, weight}){
+    function closeModal(){
+        setContainerModalOpen(false)
+    }
+    let imgSrc = require(`./../assets/images/${1}.png`);
+    if(weight <= 4){
+        imgSrc = require(`./../assets/images/${1}.png`);
+    }
+    if(weight <= 15 && weight > 4){
+        imgSrc = require(`./../assets/images/${2}.png`);
+    }
+    if(weight <= 70 && weight > 15){
+        imgSrc = require(`./../assets/images/${3}.png`);
+
+    }
+    if(weight <= 90 && weight > 70){
+        imgSrc = require(`./../assets/images/${4}.png`);
+    }
+    if(weight <= 120 && weight > 90){
+        imgSrc = require(`./../assets/images/${5}.png`);
+
+    }
+    if(weight > 120){
+        imgSrc = require(`./../assets/images/${6}.png`);
+    }
+
+    return (
+        <Modal
+  animationType='slide'
+  transparent={true}
+  visible={containerModalOpen}
+>
+  <View style={{flex:1, justifyContent: "center", alignItems: "center",}}>
+    <View style={{backgroundColor: "#fff", height: verticalScale(380), width: "90%", borderRadius: moderateScale(10), justifyContent: "center", alignItems: "center", gap:moderateScale(5),  elevation: 8}}>
+      <TouchableHighlight onPress={closeModal} style={{position: "absolute", top: 15, right: 15, zIndex: 1}}>
+        <AntDesign name="closecircle" size={moderateScale(22)} color="black" />
+      </TouchableHighlight>
+
+      <View style={{width: "100%", height: "100%", justifyContent: "center", alignItems: "center"}}>
+        <View style={{flex:3}}>
+            <Image resizeMode="contain" style={{flex:1}}  source={imgSrc}></Image>
+        </View>
+        <View style={{flex:1, flexDirection: "row", gap: 10}}>
+        <FontAwesome name="paw" size={24} color="black" />
+            <Text style={{fontSize: 18, fontWeight:"600"}}>Food Remaining: {weight}g</Text>
+        </View>
+        
+      </View>
+    </View>
+  </View>
+</Modal>
+      )
+}
 
 function InformationModal({infoModalOpen, handleInfoModal}){
 
@@ -553,7 +626,7 @@ function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, devic
                     mode={'date'}
                     value={date || new Date()}
                     onChange={handleDateChange}
-                    onTouchCancel={()=>setShowDatePicker(false)}
+                    onTouchCancel={()=> setShowDatePicker(false) }
                 />}
                 {
                     showTimePicker && <DateTimePicker 
