@@ -4,7 +4,7 @@
     "slug": "dog-feeder-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png.png",
+    "icon": "./assets/images/Icon1.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash1.png",
