@@ -30,6 +30,9 @@ const DeviceScreen = ({route}) => {
     const navigator = useNavigation();
     const {device} = route.params;
     const deviceRef = doc(db, "device-feeder", device); 
+    const [weight, setWeight] = useState(null);
+    const [containerModalOpen, setContainerModalOpen] = useState(false);
+
 
     const [feedTimes, setFeedTimes] = useState([]);
     const [weight, setWeight] = useState(null);
