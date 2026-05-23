@@ -118,7 +118,7 @@ const Home = ({navigation, currentArray, setCurrentArray}) => {
                 <KeyboardAvoidingView behavior="padding" style={styles.emptyStateContainer}>
                     <View style={styles.emptyStateInner}>
                         <TouchableOpacity onPress={()=> setModalOpen(true)} style={styles.emptyStateButton}>
-                            <AntDesign name="pluscircle" size={52} color="#C17B4E" />
+                            <AntDesign name="pluscircle" size={52} color="#000" />
                         </TouchableOpacity>
                         <Text style={styles.emptyStateTitle}>No Devices Yet</Text>
                         <Text style={styles.emptyStateSubtext}>Tap the + button to add your first feeder</Text>
@@ -164,7 +164,7 @@ function CustomModal({modalOpen, setModalOpen, inputDevice, setInputDevice, hand
                 <View style={styles.modalCard}>
                     <View style={styles.modalHandle} />
                     <View style={styles.modalHeader}>
-                        <MaterialCommunityIcons name="dog" size={36} color="#C17B4E" />
+                        <MaterialCommunityIcons name="dog" size={36} color="#000" />
                         <Text style={styles.modalTitle}>Add New Device</Text>
                         <Text style={styles.modalSubtitle}>Enter the ID of your feeder to link it to your account.</Text>
                     </View>
@@ -268,8 +268,8 @@ export function Footer(){
                 onPress={()=> navigator.navigate("Account")}
             >
                 <View style={styles.footerTabInner}>
-                    <FontAwesome name="user" size={22} color="#8A8A8A" />
-                    <Text style={[styles.footerTabText, {color: "#8A8A8A"}]}>Me</Text>
+                    <FontAwesome name="user" size={22} color="#999" />
+                    <Text style={[styles.footerTabText, {color: "#999"}]}>Me</Text>
                 </View>
             </TouchableHighlight>
         </View>
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     // Container
     container: {
         flex: 1,
-        backgroundColor: '#F7F3EE',
+        backgroundColor: '#FFFFFF',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
     },
     heroOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.32)',
+        backgroundColor: 'rgba(0,0,0,0.45)',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
@@ -304,19 +304,23 @@ const styles = StyleSheet.create({
     },
     heroTitle: {
         color: '#FFFFFF',
-        fontSize: 28,
-        fontWeight: '800',
-        letterSpacing: 0.5,
+        fontSize: 26,
+        fontWeight: '900',
+        letterSpacing: 1,
+        textTransform: 'uppercase',
     },
     heroSubtitle: {
-        color: 'rgba(255,255,255,0.80)',
-        fontSize: 13,
+        color: 'rgba(255,255,255,0.70)',
+        fontSize: 12,
         marginTop: 3,
+        letterSpacing: 0.5,
     },
     addButtonHero: {
-        backgroundColor: 'rgba(255,255,255,0.18)',
+        backgroundColor: 'rgba(255,255,255,0.15)',
         borderRadius: 50,
         padding: 6,
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.4)',
     },
     // Empty state
     emptyStateContainer: {
@@ -332,6 +336,8 @@ const styles = StyleSheet.create({
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.08,
         shadowRadius: 8,
+        borderWidth: 1,
+        borderColor: '#E5E5E5',
     },
     emptyStateInner: {
         justifyContent: 'center',
@@ -342,13 +348,14 @@ const styles = StyleSheet.create({
         padding: 4,
     },
     emptyStateTitle: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: '#2D2D2D',
+        fontSize: 14,
+        fontWeight: '900',
+        color: '#000',
         textTransform: 'uppercase',
+        letterSpacing: 1,
     },
     emptyStateSubtext: {
-        color: '#8A8A8A',
+        color: '#999',
         fontSize: 12,
         textAlign: 'center',
         paddingHorizontal: 24,
@@ -356,7 +363,7 @@ const styles = StyleSheet.create({
     // Scroll / Section
     scrollView: {
         width: '90%',
-        backgroundColor: '#F7F3EE',
+        backgroundColor: '#FFFFFF',
         marginTop: 6,
     },
     scrollContent: {
@@ -369,25 +376,27 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     sectionTitle: {
-        color: '#2D2D2D',
-        fontSize: 18,
-        fontWeight: '700',
+        color: '#000',
+        fontSize: 16,
+        fontWeight: '900',
+        textTransform: 'uppercase',
+        letterSpacing: 1,
     },
     deviceBadge: {
-        backgroundColor: '#C17B4E',
+        backgroundColor: '#000',
         borderRadius: 12,
         paddingHorizontal: 9,
         paddingVertical: 2,
     },
     deviceBadgeText: {
         color: '#FFFFFF',
-        fontSize: 12,
+        fontSize: 11,
         fontWeight: '700',
     },
     // Device card
     deviceCardWrapper: {
         borderRadius: 16,
-        marginBottom: 12,
+        marginBottom: 10,
     },
     deviceCard: {
         flexDirection: 'row',
@@ -396,16 +405,13 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         paddingVertical: 14,
         paddingHorizontal: 14,
-        elevation: 3,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.07,
-        shadowRadius: 6,
+        borderWidth: 1,
+        borderColor: '#E5E5E5',
     },
     deviceImageContainer: {
         width: horizontalScale(56),
         height: verticalScale(56),
-        backgroundColor: '#F7F3EE',
+        backgroundColor: '#F5F5F5',
         borderRadius: 12,
         justifyContent: 'center',
         alignItems: 'center',
@@ -419,22 +425,26 @@ const styles = StyleSheet.create({
         marginLeft: 14,
     },
     deviceName: {
-        fontSize: moderateScale(15),
-        fontWeight: '700',
-        color: '#2D2D2D',
+        fontSize: moderateScale(14),
+        fontWeight: '900',
+        color: '#000',
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
     deviceId: {
         fontSize: moderateScale(11),
-        color: '#8A8A8A',
+        color: '#999',
         marginTop: 2,
     },
     deviceHint: {
         fontSize: moderateScale(10),
-        color: '#C17B4E',
+        color: '#666',
         marginTop: 4,
+        textTransform: 'uppercase',
+        letterSpacing: 0.3,
     },
     feedButton: {
-        backgroundColor: '#4CAF50',
+        backgroundColor: '#000',
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 14,
@@ -443,18 +453,19 @@ const styles = StyleSheet.create({
         gap: 5,
     },
     feedButtonActive: {
-        backgroundColor: '#388E3C',
+        backgroundColor: '#333',
     },
     feedButtonText: {
         color: '#FFFFFF',
         fontWeight: '700',
-        fontSize: 13,
+        fontSize: 11,
         textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
     // Modal
     modalBackdrop: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.50)',
+        backgroundColor: 'rgba(0,0,0,0.55)',
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
@@ -472,8 +483,8 @@ const styles = StyleSheet.create({
     },
     modalHandle: {
         width: 40,
-        height: 4,
-        backgroundColor: '#E0D8D0',
+        height: 3,
+        backgroundColor: '#E0E0E0',
         borderRadius: 2,
         marginBottom: 8,
     },
@@ -483,29 +494,31 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
     modalTitle: {
-        fontSize: 22,
-        fontWeight: '800',
-        color: '#2D2D2D',
+        fontSize: 20,
+        fontWeight: '900',
+        color: '#000',
+        textTransform: 'uppercase',
+        letterSpacing: 1,
     },
     modalSubtitle: {
-        fontSize: 13,
-        color: '#8A8A8A',
+        fontSize: 12,
+        color: '#999',
         textAlign: 'center',
         paddingHorizontal: 10,
     },
     modalInput: {
         width: '100%',
-        borderWidth: 1.5,
-        borderColor: '#E8E0D8',
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
         borderRadius: 12,
         padding: 14,
         fontSize: 15,
-        color: '#2D2D2D',
+        color: '#000',
         backgroundColor: '#FAFAFA',
     },
     modalAddBtn: {
         width: '100%',
-        backgroundColor: '#C17B4E',
+        backgroundColor: '#000',
         borderRadius: 12,
         paddingVertical: 15,
         alignItems: 'center',
@@ -513,25 +526,25 @@ const styles = StyleSheet.create({
     modalAddBtnText: {
         color: '#FFFFFF',
         fontWeight: '700',
-        fontSize: 16,
+        fontSize: 14,
         textTransform: 'uppercase',
-        letterSpacing: 1.5,
+        letterSpacing: 2,
     },
     modalCancelBtn: {
         width: '100%',
-        borderWidth: 1.5,
-        borderColor: '#E8E0D8',
+        borderWidth: 1,
+        borderColor: '#000',
         borderRadius: 12,
         paddingVertical: 15,
         alignItems: 'center',
         backgroundColor: '#FFFFFF',
     },
     modalCancelBtnText: {
-        color: '#4A3728',
-        fontWeight: '600',
-        fontSize: 16,
+        color: '#000',
+        fontWeight: '700',
+        fontSize: 14,
         textTransform: 'uppercase',
-        letterSpacing: 1.5,
+        letterSpacing: 2,
     },
     // Footer
     footer: {
@@ -540,7 +553,7 @@ const styles = StyleSheet.create({
         height: 70,
         backgroundColor: '#FFFFFF',
         borderTopWidth: 1,
-        borderTopColor: '#E8E0D8',
+        borderTopColor: '#E5E5E5',
         elevation: 8,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: -2},
@@ -558,9 +571,11 @@ const styles = StyleSheet.create({
     },
     footerTabText: {
         fontSize: 11,
-        fontWeight: '600',
-        color: '#4A3728',
+        fontWeight: '700',
+        color: '#000',
         marginTop: 2,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
 });
 

@@ -166,7 +166,7 @@ function InformationModal({infoModalOpen, handleInfoModal}){
             <View style={styles.modalBackdrop}>
                 <View style={[styles.modalCard, {padding: 0, overflow: 'hidden'}]}>
                     <TouchableOpacity onPress={handleInfoModal} style={styles.modalCloseAbsolute}>
-                        <AntDesign name="closecircle" size={moderateScale(22)} color="#4A3728" />
+                        <AntDesign name="closecircle" size={moderateScale(22)} color="#000" />
                     </TouchableOpacity>
                     <Image resizeMode="contain" style={{width: '100%', height: verticalScale(350)}} source={require("./../assets/images/portion1.png")} />
                 </View>
@@ -202,12 +202,12 @@ function FoodContainerModal({containerModalOpen, setContainerModalOpen, weight})
             <View style={styles.modalBackdrop}>
                 <View style={styles.modalCard}>
                     <TouchableOpacity onPress={closeModal} style={styles.modalCloseAbsolute}>
-                        <AntDesign name="closecircle" size={moderateScale(22)} color="#4A3728" />
+                        <AntDesign name="closecircle" size={moderateScale(22)} color="#000" />
                     </TouchableOpacity>
                     <Text style={styles.modalTitle}>Food Container</Text>
                     <Image resizeMode="contain" style={{width: '100%', height: verticalScale(240)}} source={imgSrc} />
                     <View style={styles.foodWeightRow}>
-                        <FontAwesome name="paw" size={20} color="#C17B4E" />
+                        <FontAwesome name="paw" size={20} color="#000" />
                         <Text style={styles.foodWeightText}>Food Remaining: {weight}g</Text>
                     </View>
                     <TouchableOpacity style={styles.modalCloseBtn} onPress={closeModal}>
@@ -482,7 +482,7 @@ function FeedTimesModal({feedTimeModalOn, handleFeedTimeModal, feedTimes}){
                             const dateStr = new Date(time).toDateString()
                             return (
                                 <View key={i} style={styles.feedTimeItem}>
-                                    <AntDesign name="clockcircle" size={13} color="#C17B4E" />
+                                    <AntDesign name="clockcircle" size={13} color="#666" />
                                     <Text style={styles.feedTimeText}>{dateStr} · {timeStr}</Text>
                                 </View>
                             )
@@ -511,7 +511,7 @@ function Portion({portionSelected,setPortionSelected, deviceRef,handleInfoModal 
             <View style={styles.portionHeader}>
                 <Text style={styles.portionLabel}>Portion Size</Text>
                 <TouchableOpacity onPress={handleInfoModal}>
-                    <Ionicons name="information-circle" size={moderateScale(22)} color="#C17B4E" />
+                    <Ionicons name="information-circle" size={moderateScale(22)} color="#000" />
                 </TouchableOpacity>
             </View>
             <ScrollView horizontal style={{width: '100%'}} showsHorizontalScrollIndicator={false}>
@@ -530,10 +530,10 @@ function Portion({portionSelected,setPortionSelected, deviceRef,handleInfoModal 
 }
 
 const portionStyle = StyleSheet.create({
-    selected:  {height: 36, width: 36, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: "#4A3728"},
-    notSelected: {height: 36, width: 36, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: '#F0EAE3', borderWidth: 1, borderColor: '#E8E0D8'},
+    selected:  {height: 36, width: 36, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: "#000"},
+    notSelected: {height: 36, width: 36, borderRadius: 10, justifyContent: "center", alignItems: "center", backgroundColor: '#F5F5F5', borderWidth: 1, borderColor: '#E0E0E0'},
     textSelected: {color: "#FFF", fontWeight: '700'},
-    textNotSelected: {color: "#4A3728", fontWeight: '500'}
+    textNotSelected: {color: "#000", fontWeight: '500'}
 })
 
 function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, deviceRef}){
@@ -607,7 +607,7 @@ function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, devic
                         />
                     )}
                     <View style={styles.calendarDateDisplay}>
-                        <AntDesign name="calendar" size={15} color="#C17B4E" />
+                        <AntDesign name="calendar" size={15} color="#000" />
                         <Text style={styles.calendarDateText}>{`${date.toDateString()} · ${time.toLocaleTimeString()}`}</Text>
                     </View>
                     <View style={styles.calendarBtnRow}>
@@ -633,12 +633,10 @@ function CalendarModal({dateModalOpen, setDateModalOpen, updateMotorState, devic
 }
 
 const styles = StyleSheet.create({
-    // Container
     container: {
         flex: 1,
-        backgroundColor: '#F7F3EE',
+        backgroundColor: '#FFFFFF',
     },
-    // Header
     header: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -647,33 +645,26 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
         paddingVertical: 10,
         borderBottomWidth: 1,
-        borderBottomColor: '#E8E0D8',
-        elevation: 3,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.06,
-        shadowRadius: 4,
+        borderBottomColor: '#E5E5E5',
     },
     headerIconBtn: {
         padding: 8,
         borderRadius: 8,
     },
     headerTitle: {
-        fontSize: moderateScale(14),
-        fontWeight: '700',
-        color: '#2D2D2D',
+        fontSize: moderateScale(13),
+        fontWeight: '900',
+        color: '#000',
         textTransform: 'uppercase',
-        letterSpacing: 0.5,
+        letterSpacing: 1,
     },
     headerRight: {
         flexDirection: 'row',
         gap: 2,
     },
-    // Scroll
     scrollContent: {
         paddingBottom: 30,
     },
-    // Device meta
     deviceMeta: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -683,9 +674,9 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     deviceIdText: {
-        fontSize: moderateScale(12),
-        fontWeight: '600',
-        color: '#8A8A8A',
+        fontSize: moderateScale(11),
+        fontWeight: '700',
+        color: '#999',
         textTransform: 'uppercase',
         letterSpacing: 0.5,
     },
@@ -693,62 +684,54 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,
-        backgroundColor: '#FFF3EC',
+        backgroundColor: '#F5F5F5',
         borderWidth: 1,
-        borderColor: '#E8D0BC',
+        borderColor: '#E0E0E0',
         borderRadius: 20,
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
     cameraChipText: {
-        color: '#C17B4E',
-        fontSize: 12,
-        fontWeight: '600',
+        color: '#000',
+        fontSize: 11,
+        fontWeight: '700',
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
-    // Device image
     deviceImageCard: {
         marginHorizontal: 20,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#F5F5F5',
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 10,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.06,
-        shadowRadius: 6,
+        borderWidth: 1,
+        borderColor: '#E5E5E5',
     },
     deviceMainImage: {
         width: horizontalScale(180),
         height: verticalScale(300),
     },
-    // Actions
     actionsSection: {
         paddingHorizontal: 20,
         paddingTop: 18,
         gap: 12,
     },
     feedNowBtn: {
-        backgroundColor: '#4CAF50',
+        backgroundColor: '#000',
         borderRadius: 14,
         paddingVertical: 16,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         gap: 10,
-        elevation: 2,
-        shadowColor: '#4CAF50',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.30,
-        shadowRadius: 4,
     },
     feedNowBtnText: {
         color: '#FFFFFF',
-        fontWeight: '800',
-        fontSize: moderateScale(16),
+        fontWeight: '900',
+        fontSize: moderateScale(14),
         textTransform: 'uppercase',
-        letterSpacing: 1,
+        letterSpacing: 2,
     },
     secondaryBtnsRow: {
         flexDirection: 'row',
@@ -756,8 +739,8 @@ const styles = StyleSheet.create({
     },
     outlineBtn: {
         flex: 1,
-        borderWidth: 1.5,
-        borderColor: '#C17B4E',
+        borderWidth: 1,
+        borderColor: '#000',
         borderRadius: 14,
         paddingVertical: 14,
         flexDirection: 'row',
@@ -767,24 +750,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     outlineBtnText: {
-        color: '#4A3728',
+        color: '#000',
         fontWeight: '700',
-        fontSize: moderateScale(11),
+        fontSize: moderateScale(10),
         textTransform: 'uppercase',
         textAlign: 'center',
+        letterSpacing: 0.5,
     },
-    // Portion
     portionSection: {
         marginHorizontal: 20,
         marginTop: 18,
         backgroundColor: '#FFFFFF',
         borderRadius: 16,
         padding: 16,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.06,
-        shadowRadius: 6,
+        borderWidth: 1,
+        borderColor: '#E5E5E5',
         gap: 12,
     },
     portionHeader: {
@@ -793,16 +773,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     portionLabel: {
-        fontSize: moderateScale(13),
-        fontWeight: '700',
-        color: '#2D2D2D',
+        fontSize: moderateScale(12),
+        fontWeight: '900',
+        color: '#000',
         textTransform: 'uppercase',
-        letterSpacing: 0.5,
+        letterSpacing: 1,
     },
-    // Shared modal styles
     modalBackdrop: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.50)',
+        backgroundColor: 'rgba(0,0,0,0.55)',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -817,11 +796,11 @@ const styles = StyleSheet.create({
         maxHeight: '92%',
     },
     modalTitle: {
-        fontSize: 18,
-        fontWeight: '800',
-        color: '#2D2D2D',
+        fontSize: 16,
+        fontWeight: '900',
+        color: '#000',
         textTransform: 'uppercase',
-        letterSpacing: 0.5,
+        letterSpacing: 1,
     },
     modalCloseAbsolute: {
         position: 'absolute',
@@ -831,37 +810,35 @@ const styles = StyleSheet.create({
     },
     modalCloseBtn: {
         width: '100%',
-        borderWidth: 1.5,
-        borderColor: '#E8E0D8',
+        borderWidth: 1,
+        borderColor: '#000',
         borderRadius: 12,
         paddingVertical: 13,
         alignItems: 'center',
         backgroundColor: '#FFFFFF',
     },
     modalCloseBtnText: {
-        color: '#4A3728',
+        color: '#000',
         fontWeight: '700',
-        fontSize: 14,
+        fontSize: 13,
         textTransform: 'uppercase',
-        letterSpacing: 1,
+        letterSpacing: 1.5,
     },
-    // Dark modal header
     darkModalHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        backgroundColor: '#4A3728',
+        backgroundColor: '#000',
         paddingLeft: 16,
     },
     darkModalHeaderTitle: {
         color: '#FFFFFF',
         textTransform: 'uppercase',
-        fontSize: moderateScale(13),
-        fontWeight: '700',
-        letterSpacing: 0.5,
+        fontSize: moderateScale(12),
+        fontWeight: '900',
+        letterSpacing: 1,
     },
-    // Schedule item
     scheduleItem: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -872,19 +849,16 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         paddingVertical: 12,
         paddingHorizontal: 14,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.06,
-        shadowRadius: 4,
+        borderWidth: 1,
+        borderColor: '#E5E5E5',
     },
     scheduleInfo: {
         flex: 1,
     },
     scheduleTime: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: '#2D2D2D',
+        fontSize: 15,
+        fontWeight: '900',
+        color: '#000',
     },
     scheduleDays: {
         flexDirection: 'row',
@@ -893,18 +867,20 @@ const styles = StyleSheet.create({
     },
     scheduleDayText: {
         fontSize: 11,
-        color: '#8A8A8A',
+        color: '#999',
         fontWeight: '500',
     },
     schedulePortionBadge: {
-        backgroundColor: '#FFF3EC',
+        backgroundColor: '#F5F5F5',
         borderRadius: 8,
         paddingHorizontal: 8,
         paddingVertical: 3,
         marginHorizontal: 8,
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
     },
     schedulePortionText: {
-        color: '#C17B4E',
+        color: '#000',
         fontWeight: '700',
         fontSize: 12,
     },
@@ -913,12 +889,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 2,
     },
-    // Add schedule button
     addScheduleBtn: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
-        backgroundColor: '#4A3728',
+        backgroundColor: '#000',
         margin: 16,
         paddingVertical: 12,
         paddingHorizontal: 24,
@@ -928,10 +903,10 @@ const styles = StyleSheet.create({
     addScheduleBtnText: {
         color: '#FFFFFF',
         fontWeight: '700',
-        fontSize: 13,
+        fontSize: 12,
         textTransform: 'uppercase',
+        letterSpacing: 1,
     },
-    // AddTimeSched
     addSchedBody: {
         flex: 1,
         width: '100%',
@@ -946,7 +921,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'center',
         borderBottomWidth: 1,
-        borderBottomColor: '#E8E0D8',
+        borderBottomColor: '#E5E5E5',
         paddingBottom: 16,
         width: '100%',
     },
@@ -954,25 +929,25 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
         paddingVertical: 5,
         borderWidth: 1.5,
-        borderColor: '#4CAF50',
+        borderColor: '#000',
         borderRadius: 8,
-        backgroundColor: '#F0F9F0',
+        backgroundColor: '#000',
     },
     dayUnselected: {
         paddingHorizontal: 8,
         paddingVertical: 5,
         borderWidth: 1,
-        borderColor: '#E8E0D8',
+        borderColor: '#E0E0E0',
         borderRadius: 8,
     },
     dayTextSelected: {
-        color: '#2D7A2D',
-        fontSize: moderateScale(13),
-        fontWeight: '600',
+        color: '#FFF',
+        fontSize: moderateScale(12),
+        fontWeight: '700',
     },
     dayTextUnselected: {
-        color: '#4A3728',
-        fontSize: moderateScale(13),
+        color: '#000',
+        fontSize: moderateScale(12),
         fontWeight: '500',
     },
     timePickerRow: {
@@ -981,7 +956,7 @@ const styles = StyleSheet.create({
         gap: 16,
     },
     setTimeBtn: {
-        backgroundColor: '#4A3728',
+        backgroundColor: '#000',
         paddingHorizontal: 14,
         paddingVertical: 8,
         borderRadius: 8,
@@ -991,13 +966,15 @@ const styles = StyleSheet.create({
     },
     setTimeBtnText: {
         color: '#FFF',
-        fontWeight: '600',
-        fontSize: 13,
+        fontWeight: '700',
+        fontSize: 12,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
     selectedTimeText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#2D2D2D',
+        color: '#000',
     },
     addSchedPortionSection: {
         width: '100%',
@@ -1005,17 +982,17 @@ const styles = StyleSheet.create({
     },
     addSchedPortionLabel: {
         textTransform: 'uppercase',
-        color: '#4A3728',
-        fontSize: 12,
-        fontWeight: '700',
-        letterSpacing: 0.5,
+        color: '#000',
+        fontSize: 11,
+        fontWeight: '900',
+        letterSpacing: 1,
     },
     saveSchedBtn: {
         flexDirection: 'row',
         gap: 8,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#4A3728',
+        backgroundColor: '#000',
         borderRadius: 10,
         paddingVertical: 12,
         paddingHorizontal: 24,
@@ -1025,50 +1002,49 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         color: '#FFF',
         fontWeight: '700',
-        fontSize: 13,
-        letterSpacing: 0.5,
+        fontSize: 12,
+        letterSpacing: 1,
     },
-    // FeedTimesModal
     feedTimeItem: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
         paddingVertical: 10,
         borderBottomWidth: 1,
-        borderBottomColor: '#F0EAE3',
+        borderBottomColor: '#F0F0F0',
         width: '100%',
     },
     feedTimeText: {
         fontWeight: '600',
         fontSize: moderateScale(13),
-        color: '#2D2D2D',
+        color: '#000',
         flex: 1,
     },
-    // FoodContainerModal
     foodWeightRow: {
         flexDirection: 'row',
         gap: 8,
         alignItems: 'center',
     },
     foodWeightText: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: '700',
-        color: '#2D2D2D',
+        color: '#000',
     },
-    // CalendarModal
     calendarDateDisplay: {
         flexDirection: 'row',
         gap: 8,
         alignItems: 'center',
-        backgroundColor: '#FFF3EC',
+        backgroundColor: '#F5F5F5',
         borderRadius: 10,
         padding: 12,
         width: '100%',
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
     },
     calendarDateText: {
-        fontSize: 13,
+        fontSize: 12,
         fontWeight: '600',
-        color: '#4A3728',
+        color: '#000',
         flex: 1,
     },
     calendarBtnRow: {
@@ -1078,7 +1054,7 @@ const styles = StyleSheet.create({
     },
     calendarPickerBtn: {
         flex: 1,
-        backgroundColor: '#4A3728',
+        backgroundColor: '#000',
         borderRadius: 10,
         paddingVertical: 12,
         flexDirection: 'row',
@@ -1089,22 +1065,23 @@ const styles = StyleSheet.create({
     calendarPickerBtnText: {
         color: '#FFF',
         fontWeight: '700',
-        fontSize: 13,
+        fontSize: 12,
         textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
     addFeedScheduleBtn: {
         width: '100%',
-        backgroundColor: '#C17B4E',
+        backgroundColor: '#000',
         borderRadius: 12,
         paddingVertical: 14,
         alignItems: 'center',
     },
     addFeedScheduleBtnText: {
         color: '#FFF',
-        fontWeight: '700',
-        fontSize: 14,
+        fontWeight: '900',
+        fontSize: 13,
         textTransform: 'uppercase',
-        letterSpacing: 0.5,
+        letterSpacing: 1.5,
     },
 });
 

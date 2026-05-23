@@ -47,40 +47,93 @@ const Login = ({navigation}) => {
   }
 
   return (
-    !user && <SafeAreaView style ={{flex: 1, backgroundColor: COLORS.white, justifyContent:"center", alignItems:"center"}}>
+    !user && <SafeAreaView style={styles.screen}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior="padding"
-
       >
-       <View>
-        <TouchableWithoutFeedback onPress={()=> navigator.navigate("Welcome")}>
-          <Text style={{textTransform: "uppercase", color: "#000", fontSize: moderateScale(68), fontWeight: "300"}}>&#8249;</Text>
-        </TouchableWithoutFeedback>
-
-          <Text style={{textTransform: "uppercase", color: "#000", fontSize: moderateScale(26), fontWeight: "900"}}>Log in</Text>
-       </View>
-
-
-        <View style={{ gap: 30}}>
-          <TextInput placeholder="Email address" value={inputEmail} onChangeText={text=> setinputEmail(text)} style={{fontSize:  moderateScale(16),height: verticalScale(50), borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
-          <TextInput placeholder="Password" value={inputPassword} secureTextEntry onChangeText={text=> setInputPassword(text)} style={{fontSize: 18,height: verticalScale(50), borderBottomWidth: 1, borderBottomColor: "#DDDDDD"}}/>
+        <View>
+          <TouchableWithoutFeedback onPress={()=> navigator.navigate("Welcome")}>
+            <Text style={styles.backArrow}>&#8249;</Text>
+          </TouchableWithoutFeedback>
+          <Text style={styles.heading}>Log in</Text>
         </View>
 
-       
-        <TouchableOpacity style={{backgroundColor: "#000", borderWidth: 2, padding: 10, borderColor: "#fff", alignItems: "center"}} onPress={handleSignIn}>
-          <Text style={{color:"#fff", textTransform:"uppercase", fontWeight: "bold", fontSize: moderateScale(16), padding: 5}}>Log in</Text>
-        </TouchableOpacity> 
-      
+        <View style={styles.inputGroup}>
+          <TextInput
+            placeholder="Email address"
+            value={inputEmail}
+            onChangeText={text=> setinputEmail(text)}
+            style={styles.input}
+            placeholderTextColor="#999"
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <TextInput
+            placeholder="Password"
+            value={inputPassword}
+            secureTextEntry
+            onChangeText={text=> setInputPassword(text)}
+            style={styles.input}
+            placeholderTextColor="#999"
+          />
+        </View>
+
+        <TouchableOpacity style={styles.primaryBtn} onPress={handleSignIn}>
+          <Text style={styles.primaryBtnText}>Log in</Text>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 const styles= StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
-    flex:1,
-    width: "90%",
-    gap: 120
-  }
+    flex: 1,
+    width: '90%',
+    gap: 80,
+    justifyContent: 'center',
+  },
+  backArrow: {
+    color: '#000',
+    fontSize: moderateScale(68),
+    fontWeight: '300',
+    lineHeight: moderateScale(68),
+    marginBottom: 4,
+  },
+  heading: {
+    textTransform: 'uppercase',
+    color: '#000',
+    fontSize: moderateScale(28),
+    fontWeight: '900',
+    letterSpacing: 1,
+  },
+  inputGroup: {
+    gap: 24,
+  },
+  input: {
+    fontSize: moderateScale(15),
+    height: verticalScale(50),
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+    color: '#000',
+  },
+  primaryBtn: {
+    backgroundColor: '#000',
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
+  primaryBtnText: {
+    color: '#FFF',
+    textTransform: 'uppercase',
+    fontWeight: '700',
+    fontSize: moderateScale(14),
+    letterSpacing: 2,
+  },
 })
 export default Login;
