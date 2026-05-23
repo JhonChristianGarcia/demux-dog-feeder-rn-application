@@ -231,7 +231,7 @@ export function Device({deviceId}){
                     />
                 </View>
                 <View style={styles.deviceInfo}>
-                    <Text style={styles.deviceName}>Feeder</Text>
+                    <Text style={styles.deviceName}>Home</Text>
                     <Text style={styles.deviceId}>ID: {deviceId}</Text>
                     <Text style={styles.deviceHint}>Tap to manage</Text>
                 </View>
